@@ -1,0 +1,29 @@
+.filmCard {
+  display: block;
+  position: relative;
+
+  .filmCardImage {
+    width: 100%;
+    height: 350px;
+    object-fit: cover;
+  }
+
+  .filmCardHover {
+    display: none;
+
+    .filmCardIcon {
+      margin-right: 3px;
+    }
+  }
+
+  &:hover .filmCardHover {
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+}

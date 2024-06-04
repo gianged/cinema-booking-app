@@ -47,20 +47,15 @@ router.post("/user", (req, res) => {
 router.put("/user/:id", (req, res) => {
   const { password, isBanned, isActive } = req.body;
   const { id } = req.params;
-  const query =
-    "UPDATE user SET password = ?, isBanned = ?, isActive = ? WHERE id = ?";
-  connection.query(
-    query,
-    [password, isBanned, isActive, id],
-    (err, results) => {
-      if (err) {
-        console.log(err);
-        res.sendStatus(500).send("Server-side error");
-        return;
-      }
-      res.json(results);
+  const query = "UPDATE user SET password = ?, isBanned = ?, isActive = ? WHERE id = ?";
+  connection.query(query, [password, isBanned, isActive, id], (err, results) => {
+    if (err) {
+      console.log(err);
+      res.sendStatus(500).send("Server-side error");
+      return;
     }
-  );
+    res.json(results);
+  });
 });
 
 router.delete("/user/:id", (req, res) => {
