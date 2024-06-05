@@ -21,7 +21,7 @@ const getFilmDetail = async (id: string) => {
   return data;
 };
 
-export const FilmDetail = () => {
+export const FilmDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [film, setFilm] = useState<any>({});
 
@@ -33,7 +33,7 @@ export const FilmDetail = () => {
     <>
       <Row justify="center" className="filmDetail" gutter={[24, 24]}>
         <Col span={4}>
-          <img className="filmDetailImage" src={film.poster} />
+          <img className="filmDetailImage" src={film.poster} alt="Poster" />
         </Col>
         <Col span={8}>
           <h1>{film.filmName}</h1>

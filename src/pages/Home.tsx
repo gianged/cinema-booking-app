@@ -1,18 +1,16 @@
 import React from "react";
 import "./Home.scss";
 import { Layout, Menu, Row, Col } from "antd";
-import { Link, Outlet, useNavigate } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import { Authenticate } from "../components/Authenticate";
 
 const { Header, Content, Footer } = Layout;
 const { Item } = Menu;
 
-export const Home = () => {
-  const navigate = useNavigate();
-
+export const Home: React.FC = () => {
   return (
     <>
-      <Layout>
+      <Layout className="layout">
         <Header className="header">
           <div className="logo" />
           <Row className="menu" justify="space-between">
@@ -31,7 +29,7 @@ export const Home = () => {
             </Col>
           </Row>
         </Header>
-        <Content>
+        <Content className="content">
           <Outlet />
         </Content>
         <Footer className="footer">

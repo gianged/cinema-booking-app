@@ -23,7 +23,7 @@ const slideShowData = async () => {
   return data;
 };
 
-export const SlideShow = () => {
+export const SlideShow: React.FC = () => {
   const [data, setData] = useState<[]>([]);
   const [hover, setHover] = useState<boolean>(true);
 
@@ -45,7 +45,7 @@ export const SlideShow = () => {
         {data.map((item: any) => (
           <div key={item.id} onMouseOver={MouseOver} onMouseLeave={mouseLeave}>
             <div className="slideShowImage">
-              <img src={item.backdrop} />
+              <img src={item.backdrop} alt="Backdrop" />
               <div className="slideShowDetail" hidden={hover}>
                 <h1>{item.filmName}</h1>
                 <p>{item.filmDescription}</p>

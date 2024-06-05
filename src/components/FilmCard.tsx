@@ -24,7 +24,7 @@ const filmCardData = async () => {
   return data;
 };
 
-export const FilmCard = () => {
+export const FilmCard: React.FC = () => {
   const [filmData, setFilmData] = useState<[]>([]);
 
   useEffect(() => {
@@ -38,7 +38,7 @@ export const FilmCard = () => {
       {filmData.map((item: any) => (
         <Col key={item.id} span={4}>
           <Card hoverable className="filmCard">
-            <img className="filmCardImage" alt="film poster" src={item.poster} />
+            <img className="filmCardImage" alt="Poster" src={item.poster} />
             <div className="filmCardHover">
               <Button>
                 <Link to={"/"}>

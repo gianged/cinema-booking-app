@@ -1,11 +1,10 @@
 import React from "react";
 import { Route, BrowserRouter, Routes } from "react-router-dom";
 import { Home } from "./pages/Home";
+import { AuthenticateProvider } from "./contexts/AuthenticateContext";
 import { FilmDetail } from "./pages/FilmDetail";
 import { HomeContent } from "./pages/HomeContent";
-import {
-  AuthenticateProvider,
-} from "./contexts/AuthenticateContext";
+import { LoginPage } from "./pages/LoginPage";
 
 export const App = () => {
   return (
@@ -15,6 +14,7 @@ export const App = () => {
           <Route path="/" element={<Home />}>
             <Route index element={<HomeContent />} />
             <Route path="/filmdetail/:id" element={<FilmDetail />} />
+            <Route path="/login" element={<LoginPage />} />
           </Route>
           <Route path="/admin" element={""}>
             {/* TODO: Add admin routes */}
