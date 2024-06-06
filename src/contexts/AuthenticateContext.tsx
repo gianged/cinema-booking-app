@@ -61,7 +61,10 @@ export const AuthenticateProvider = ({ children }: { children: ReactElement }) =
 
   const login = (username: string, password: string) => {
     getUser(username, password).then((data) => {
-      if (data[0].isActive === 1 && data[0].isBanned === 0) {
+      if (data.length === 0) {
+        return;
+      }
+      else if (data[0].isActive === 1 && data[0].isBanned === 0) {
         setIsLogin(true);
         id.current = data[0].id;
         displayName.current = data[0].username;
