@@ -34,6 +34,13 @@ export const LoginPage: React.FC = () => {
         <Button type="primary" htmlType="submit">
           Login
         </Button>
+        <Button
+          onClick={() => {
+            navigate("/");
+          }}
+        >
+          Go Back
+        </Button>
       </Form.Item>
     </Form>
   );

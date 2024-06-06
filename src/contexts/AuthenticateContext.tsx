@@ -8,6 +8,7 @@ import React, {
   MutableRefObject,
   useEffect,
 } from "react";
+import { useCookies } from "react-cookie";
 
 interface AuthenticateContextType {
   isLogin: boolean;
@@ -48,12 +49,14 @@ export const AuthenticateProvider = ({ children }: { children: ReactElement }) =
   const role = useRef<number>(0);
   const id = useRef<number | undefined>(undefined);
   const displayName = useRef<string | undefined>(undefined);
+  const [authenticateCookie, setAuthenticateCookie, removeAuthenticateCookie] = useCookies(["authenticate"]);
 
   const logout = () => {
     role.current = 0;
     id.current = undefined;
     displayName.current = undefined;
     setIsLogin(false);
+    removeAuthenticateCookie("authenticate");
   };
 
   const login = (username: string, password: string) => {
@@ -63,6 +66,7 @@ export const AuthenticateProvider = ({ children }: { children: ReactElement }) =
         id.current = data[0].id;
         displayName.current = data[0].username;
         role.current = 1;
+        setAuthenticateCookie("authenticate", { id: id.current, displayName: displayName.current, role: role.current });
         if (data[0].role === "a") {
           role.current = 2;
         }
@@ -70,7 +74,14 @@ export const AuthenticateProvider = ({ children }: { children: ReactElement }) =
     });
   };
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    if (authenticateCookie.authenticate) {
+      id.current = authenticateCookie.authenticate.id;
+      displayName.current = authenticateCookie.authenticate.displayName;
+      role.current = authenticateCookie.authenticate.role;
+      setIsLogin(true);
+    }
+  }, [isLogin]);
 
   return (
     <AuthenticateContext.Provider
