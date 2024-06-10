@@ -14,7 +14,10 @@ const filmCardData = async () => {
     for (let item of data) {
       if (item.poster) {
         const base64String = btoa(
-          new Uint8Array(item.poster.data).reduce((data, byte) => data + String.fromCharCode(byte), "")
+          new Uint8Array(item.poster.data).reduce(
+            (data, byte) => data + String.fromCharCode(byte),
+            ""
+          )
         );
         item.poster = `data:image/jpge;base64,${base64String}`;
       }

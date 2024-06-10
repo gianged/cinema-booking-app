@@ -3,6 +3,7 @@ import { AuthenticateContext } from "../contexts/AuthenticateContext";
 import { Button, Form, Input } from "antd";
 import { useNavigate } from "react-router-dom";
 import "./LoginPage.scss";
+import { Link } from "react-router-dom";
 
 export const LoginPage: React.FC = () => {
   const authetication = useContext(AuthenticateContext);
@@ -24,12 +25,21 @@ export const LoginPage: React.FC = () => {
         if (authetication.isLogin) navigate("/");
       }}
     >
-      <Form.Item label="Username" name="username" rules={[{ required: true, message: "Please input your username!" }]}>
+      <Form.Item
+        label="Username"
+        name="username"
+        rules={[{ required: true, message: "Please input your username!" }]}
+      >
         <Input />
       </Form.Item>
-      <Form.Item label="Password" name="password" rules={[{ required: true, message: "Please input your password!" }]}>
+      <Form.Item
+        label="Password"
+        name="password"
+        rules={[{ required: true, message: "Please input your password!" }]}
+      >
         <Input.Password />
       </Form.Item>
+      {authetication.loginError && <p className="error">{authetication.loginError}</p>}
       <Form.Item wrapperCol={{ offset: 6, span: 4 }}>
         <Button type="primary" htmlType="submit">
           Login
@@ -41,6 +51,11 @@ export const LoginPage: React.FC = () => {
         >
           Go Back
         </Button>
+      </Form.Item>
+      <Form.Item wrapperCol={{ offset: 6, span: 16 }}>
+        <Link to="/register" className="register">
+          Doesn't have an account yet?
+        </Link>
       </Form.Item>
     </Form>
   );

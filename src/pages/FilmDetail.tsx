@@ -8,15 +8,11 @@ const getFilmDetail = async (id: string) => {
     method: "GET",
   });
   const data = await response.json();
-  if (Array.isArray(data)) {
-    for (let item of data) {
-      if (item.poster) {
-        const base64String = btoa(
-          new Uint8Array(item.poster.data).reduce((data, byte) => data + String.fromCharCode(byte), "")
-        );
-        item.poster = `data:image/jpge;base64,${base64String}`;
-      }
-    }
+  if (data.poster) {
+    const base64String = btoa(
+      new Uint8Array(data.poster.data).reduce((data, byte) => data + String.fromCharCode(byte), "")
+    );
+    data.poster = `data:image/jpge;base64,${base64String}`;
   }
   return data;
 };
@@ -26,7 +22,7 @@ export const FilmDetail: React.FC = () => {
   const [film, setFilm] = useState<any>({});
 
   useEffect(() => {
-    getFilmDetail(id ?? "").then((data) => setFilm(data[0]));
+    getFilmDetail(id ?? "").then((data) => setFilm(data));
   }, [id]);
 
   return (

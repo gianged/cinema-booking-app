@@ -1,10 +1,11 @@
 import React, { useContext, useState } from "react";
-import { Button, Form, Input, Menu, Modal, Row } from "antd";
+import { Button, Dropdown, Form, Input, Menu, Modal, Row, Space } from "antd";
 import { AuthenticateContext } from "../contexts/AuthenticateContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser } from "@fortawesome/free-solid-svg-icons";
+import { faUser, faRightFromBracket, faGear } from "@fortawesome/free-solid-svg-icons";
 import { faUser as faUserLogout } from "@fortawesome/free-regular-svg-icons";
 import "./Authenticate.scss";
+import { Link } from "react-router-dom";
 
 export const Authenticate: React.FC = () => {
   const authenticate = useContext(AuthenticateContext);
@@ -17,10 +18,34 @@ export const Authenticate: React.FC = () => {
           <i>Welcome, {authenticate.displayName?.current}</i>
         </p>
         <Menu.Item key="3">
-          <Button type="primary" onClick={() => authenticate.logout()}>
-            <FontAwesomeIcon className="fa-icon" icon={faUserLogout} />
-            Logout
-          </Button>
+          <Dropdown
+            menu={{
+              items: [
+                {
+                  key: "userSetting",
+                  label: "User Setting",
+                  icon: <FontAwesomeIcon icon={faGear} />,
+                  onClick: () => {
+                    console.log("User Setting");
+                  },
+                },
+                {
+                  key: "logout",
+                  label: "Logout",
+                  icon: <FontAwesomeIcon icon={faRightFromBracket} />,
+                  onClick: () => {
+                    authenticate.logout();
+                  },
+                },
+              ],
+            }}
+          >
+            <Button>
+              <Space>
+                <FontAwesomeIcon className="fa-icon" icon={faUserLogout} />
+              </Space>
+            </Button>
+          </Dropdown>
         </Menu.Item>
       </Row>
     </Menu>
@@ -34,7 +59,12 @@ export const Authenticate: React.FC = () => {
           </Button>
         </Menu.Item>
       </Menu>
-      <Modal className="modal-login" open={modalOpen} onCancel={() => setModalOpen(false)} footer={null}>
+      <Modal
+        className="modal-login"
+        open={modalOpen}
+        onCancel={() => setModalOpen(false)}
+        footer={null}
+      >
         <Form
           className="modal-form"
           labelCol={{ span: 6 }}
@@ -58,13 +88,21 @@ export const Authenticate: React.FC = () => {
           >
             <Input.Password />
           </Form.Item>
+          {authenticate.loginError && <p className="error">{authenticate.loginError}</p>}
           <Form.Item wrapperCol={{ offset: 6, span: 16 }}>
             <Button type="primary" htmlType="submit">
               Login
             </Button>
+          </Form.Item>
+          <Form.Item wrapperCol={{ offset: 6, span: 16 }}>
+            <Link to={"/register"} className="register" onClick={() => setModalOpen(false)}>
+              Doesn't have an account yet?
+            </Link>
           </Form.Item>
         </Form>
       </Modal>
     </>
   );
 };
+
+//TODO: user setting

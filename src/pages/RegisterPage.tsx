@@ -1,12 +1,43 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthenticateContext } from "../contexts/AuthenticateContext";
 import { Form, Button, Input } from "antd";
 import "./RegisterPage.scss";
 
+const RegisterAccount = async (username: string, password: string) => {
+  const response = await fetch("http://localhost:4000/security/register", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ username: username, password: password }),
+  });
+
+  const data = await response.json();
+
+  return data;
+};
+
 export const RegisterPage: React.FC = () => {
   const authetication = useContext(AuthenticateContext);
   const navigate = useNavigate();
+  const [registerError, setRegisterError] = useState<string | null>(null);
+
+  const RegisterFunction = ({ input }: { input: any }) => {
+    RegisterAccount(input.username, input.password)
+      .then((data) => {
+        if (!data.hasOwnProperty("message")) {
+          authetication.login(input.username, input.password);
+          navigate("/");
+          return;
+        }
+        setRegisterError(data.message);
+        return;
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
 
   return (
     <Form
@@ -14,10 +45,14 @@ export const RegisterPage: React.FC = () => {
       labelCol={{ span: 4, offset: 2 }}
       wrapperCol={{ span: 4 }}
       onFinish={(values) => {
-        navigate("/");
+        RegisterFunction({ input: values });
       }}
     >
-      <Form.Item label="Username" name="username" rules={[{ required: true, message: "Please input your username!" }]}>
+      <Form.Item
+        label="Username"
+        name="username"
+        rules={[{ required: true, message: "Please input your username!" }]}
+      >
         <Input />
       </Form.Item>
       <Form.Item
@@ -34,7 +69,9 @@ export const RegisterPage: React.FC = () => {
               if (pattern.test(value)) {
                 return Promise.resolve();
               }
-              return Promise.reject("Password must be at least 8 characters long, contain letters and numbers!");
+              return Promise.reject(
+                "Password must be at least 8 characters long, contain letters and numbers!"
+              );
             },
           }),
         ]}
@@ -59,6 +96,7 @@ export const RegisterPage: React.FC = () => {
       >
         <Input.Password />
       </Form.Item>
+      {registerError && <p className="error">{registerError}</p>}
       <Form.Item wrapperCol={{ offset: 6, span: 4 }}>
         <Button type="primary" htmlType="submit">
           Register

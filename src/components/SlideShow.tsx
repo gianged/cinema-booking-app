@@ -12,7 +12,10 @@ const slideShowData = async () => {
     for (let item of data) {
       if (item.backdrop) {
         const base64String = btoa(
-          new Uint8Array(item.backdrop.data).reduce((data, byte) => data + String.fromCharCode(byte), "")
+          new Uint8Array(item.backdrop.data).reduce(
+            (data, byte) => data + String.fromCharCode(byte),
+            ""
+          )
         );
 
         item.backdrop = `data:image/jpge;base64,${base64String}`;

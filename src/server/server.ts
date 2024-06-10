@@ -1,25 +1,13 @@
 import express from "express";
+import { Sequelize } from "sequelize";
 import mysql from "mysql2";
 import cors from "cors";
-import userRouter from "./api/user";
-import filmRouter from "./api/film";
+import userRouter from "./api/userRoute";
+import filmRouter from "./api/filmRoute";
 
 const app = express();
 const host = "localhost";
 const port = 4000;
-
-// parse requests of content-type - application/json
-// app.use(bodyParser.json());
-// parse requests of content-type - application/x-www-form-urlencoded
-// app.use(bodyParser.urlencoded({ extended: true }));
-
-export const connection = mysql.createConnection({
-  host: "localhost",
-  port: 8000,
-  user: "admin",
-  password: "Giang@123",
-  database: "cinema-booking-app-db",
-});
 
 app.use(cors());
 app.use(express.json());
@@ -29,19 +17,24 @@ app.listen(port, host, () => {
   console.log(`Server is running on port ${host}:${port}`);
 });
 
-// app.get("/", (req, res) => {
-//   res.json({ message: "Welcome to Cinema Booking App" });
-// });
+//test connection
+export const sequelize = new Sequelize("cinema-booking-app-db", "admin", "Giang@123", {
+  host: "localhost",
+  dialect: "mysql",
+  dialectModule: mysql,
+  port: 8000,
+  logging: console.log,
+});
+
+sequelize
+  .authenticate()
+  .then(() => {
+    console.log("Connection has been established successfully.");
+  })
+  .catch((err) => {
+    console.error("Unable to connect to the database:", err);
+  });
 
 //middleware
 app.use("/security", userRouter);
 app.use(filmRouter);
-
-connection.connect((err) => {
-  if (err) {
-    console.error("Connection failed: ", err);
-    process.exit(1);
-  }
-
-  console.log("Connected to MySQL server");
-});

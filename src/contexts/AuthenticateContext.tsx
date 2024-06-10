@@ -18,6 +18,8 @@ interface AuthenticateContextType {
   logout: () => void;
   id?: MutableRefObject<number | undefined>;
   displayName?: MutableRefObject<string | undefined>;
+  loginError: string | null;
+  setLoginError: Dispatch<SetStateAction<string | null>>;
 }
 
 export const AuthenticateContext = createContext<AuthenticateContextType>({
@@ -28,6 +30,8 @@ export const AuthenticateContext = createContext<AuthenticateContextType>({
   logout: () => {},
   id: undefined,
   displayName: undefined,
+  loginError: null,
+  setLoginError: () => {},
 });
 
 const getUser = async (username: string, password: string) => {
@@ -49,7 +53,10 @@ export const AuthenticateProvider = ({ children }: { children: ReactElement }) =
   const role = useRef<number>(0);
   const id = useRef<number | undefined>(undefined);
   const displayName = useRef<string | undefined>(undefined);
-  const [authenticateCookie, setAuthenticateCookie, removeAuthenticateCookie] = useCookies(["authenticate"]);
+  const [authenticateCookie, setAuthenticateCookie, removeAuthenticateCookie] = useCookies([
+    "authenticate",
+  ]);
+  const [loginError, setLoginError] = useState<string | null>(null);
 
   const logout = () => {
     role.current = 0;
@@ -61,16 +68,21 @@ export const AuthenticateProvider = ({ children }: { children: ReactElement }) =
 
   const login = (username: string, password: string) => {
     getUser(username, password).then((data) => {
-      if (data.length === 0) {
+      if (!data.hasOwnProperty("id")) {
+        setLoginError("Username or password is incorrect");
         return;
-      }
-      else if (data[0].isActive === 1 && data[0].isBanned === 0) {
+      } else if (data.isActive === 1 && data.isBanned === 0) {
+        setLoginError(null);
         setIsLogin(true);
-        id.current = data[0].id;
-        displayName.current = data[0].username;
+        id.current = data.id;
+        displayName.current = data.username;
         role.current = 1;
-        setAuthenticateCookie("authenticate", { id: id.current, displayName: displayName.current, role: role.current });
-        if (data[0].role === "a") {
+        setAuthenticateCookie("authenticate", {
+          id: id.current,
+          displayName: displayName.current,
+          role: role.current,
+        });
+        if (data.role === "a") {
           role.current = 2;
         }
       }
@@ -96,6 +108,8 @@ export const AuthenticateProvider = ({ children }: { children: ReactElement }) =
         logout,
         id,
         displayName,
+        loginError,
+        setLoginError,
       }}
     >
       {children}

@@ -1,7 +1,12 @@
 .login-form {
-    margin: 24px;
+  margin: 24px;
 
-    button {
-        margin-right: 16px;
-    }
+  button {
+    margin-right: 16px;
+  }
+
+  .error {
+    color: red;
+    margin-inline-start: 25%;
+  }
 }
