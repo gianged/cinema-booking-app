@@ -1,13 +1,16 @@
-import React from "react";
+import React, { useContext } from "react";
 import "./Home.scss";
 import { Layout, Menu, Row, Col } from "antd";
 import { Link, Outlet } from "react-router-dom";
 import { Authenticate } from "../components/Authenticate";
+import { AuthenticateContext } from "../contexts/AuthenticateContext";
 
 const { Header, Content, Footer } = Layout;
 const { Item } = Menu;
 
 export const Home: React.FC = () => {
+  const authenticate = useContext(AuthenticateContext);
+
   return (
     <>
       <Layout className="layout">
