@@ -6,8 +6,8 @@ import { FilmDetail } from "./pages/FilmDetail";
 import { HomeContent } from "./pages/HomeContent";
 import { LoginPage } from "./pages/LoginPage";
 import { RegisterPage } from "./pages/RegisterPage";
-import { Admin } from "./pages/Admin";
 import { AdminChecking } from "./components/AdminChecking";
+import { ManageUser } from "./pages/ManageUser";
 
 export const App = () => {
   return (
@@ -20,15 +20,17 @@ export const App = () => {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
           </Route>
-
           <Route
             path="/manage"
             element={
               <AdminChecking>
-                <Admin />
+                <Home />
               </AdminChecking>
             }
-          ></Route>
+          >
+            <Route index element={<HomeContent />} />
+            <Route path="user" element={<ManageUser />} />
+          </Route>
         </Routes>
       </AuthenticateProvider>
     </BrowserRouter>

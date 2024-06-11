@@ -44,7 +44,7 @@ ShowSchedule.init(
     room: {
       type: DataTypes.STRING,
     },
-    isActived: {
+    isActive: {
       type: DataTypes.INTEGER,
     },
   },
@@ -56,5 +56,5 @@ ShowSchedule.init(
   }
 );
 
-ShowSchedule.belongsTo(Film, { foreignKey: "film" });
-Film.hasMany(ShowSchedule, { foreignKey: "film" });
+ShowSchedule.belongsTo(Film, { foreignKey: "film", onDelete: "CASCADE", onUpdate: "CASCADE" });
+Film.hasMany(ShowSchedule, { foreignKey: "film", onDelete: "CASCADE", onUpdate: "CASCADE" });

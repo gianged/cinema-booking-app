@@ -14,9 +14,6 @@ const sequelize = new Sequelize("cinema-booking-app-db", "admin", "Giang@123", {
 export class FilmCategory extends Model {
   declare filmId: number;
   declare categoryId: number;
-
-  declare Film: Film;
-  declare Category: Category;
 }
 
 FilmCategory.init(
@@ -48,7 +45,15 @@ FilmCategory.init(
   }
 );
 
-FilmCategory.belongsTo(Film, { foreignKey: "filmId" });
-FilmCategory.belongsTo(Category, { foreignKey: "categoryId" });
-Film.hasMany(FilmCategory, { foreignKey: "filmId" });
-Category.hasMany(FilmCategory, { foreignKey: "categoryId" });
+FilmCategory.belongsTo(Film, { foreignKey: "filmId", onDelete: "CASCADE", onUpdate: "CASCADE" });
+FilmCategory.belongsTo(Category, {
+  foreignKey: "categoryId",
+  onDelete: "SET NULL",
+  onUpdate: "SET NULL",
+});
+Film.hasMany(FilmCategory, { foreignKey: "filmId", onDelete: "CASCADE", onUpdate: "CASCADE" });
+Category.hasMany(FilmCategory, {
+  foreignKey: "categoryId",
+  onDelete: "SET NULL",
+  onUpdate: "SET NULL",
+});

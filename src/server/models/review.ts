@@ -10,7 +10,7 @@ const sequelize = new Sequelize("cinema-booking-app-db", "admin", "Giang@123", {
   logging: console.log,
 });
 
-class Review extends Model {
+export class Review extends Model {
   declare id: number;
   declare filmId: number;
   declare userId: number;
@@ -54,7 +54,7 @@ Review.init(
   }
 );
 
-Review.belongsTo(Film, { foreignKey: "filmId" });
-Review.belongsTo(User, { foreignKey: "userId" });
-Film.hasMany(Review, { foreignKey: "filmId" });
-User.hasMany(Review, { foreignKey: "userId" });
+Review.belongsTo(Film, { foreignKey: "filmId", onDelete: "CASCADE", onUpdate: "CASCADE" });
+Review.belongsTo(User, { foreignKey: "userId", onDelete: "CASCADE", onUpdate: "CASCADE" });
+Film.hasMany(Review, { foreignKey: "filmId", onDelete: "CASCADE", onUpdate: "CASCADE" });
+User.hasMany(Review, { foreignKey: "userId", onDelete: "CASCADE", onUpdate: "CASCADE" });

@@ -77,14 +77,14 @@ export const AuthenticateProvider = ({ children }: { children: ReactElement }) =
         id.current = data.id;
         displayName.current = data.username;
         role.current = 1;
+        if (data.role === "a") {
+          role.current = 2;
+        }
         setAuthenticateCookie("authenticate", {
           id: id.current,
           displayName: displayName.current,
           role: role.current,
         });
-        if (data.role === "a") {
-          role.current = 2;
-        }
       }
     });
   };

@@ -1,4 +1,5 @@
 import { Model, DataTypes, Sequelize } from "sequelize";
+import { FilmCategory } from "./film_category";
 
 const sequelize = new Sequelize("cinema-booking-app-db", "admin", "Giang@123", {
   host: "localhost",

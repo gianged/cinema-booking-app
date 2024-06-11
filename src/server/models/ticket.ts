@@ -54,7 +54,11 @@ Ticket.init(
   }
 );
 
-Ticket.belongsTo(User, { foreignKey: "idUser" });
-Ticket.belongsTo(ShowSchedule, { foreignKey: "idShow" });
-User.hasMany(Ticket, { foreignKey: "idUser" });
-ShowSchedule.hasMany(Ticket, { foreignKey: "idShow" });
+Ticket.belongsTo(User, { foreignKey: "idUser", onDelete: "CASCADE", onUpdate: "CASCADE" });
+Ticket.belongsTo(ShowSchedule, {
+  foreignKey: "idShow",
+  onDelete: "SET NULL",
+  onUpdate: "SET NULL",
+});
+User.hasMany(Ticket, { foreignKey: "idUser", onDelete: "CASCADE", onUpdate: "CASCADE" });
+ShowSchedule.hasMany(Ticket, { foreignKey: "idShow", onDelete: "SET NULL", onUpdate: "SET NULL" });

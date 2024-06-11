@@ -72,10 +72,13 @@ router.get("/film", async (req, res) => {
   }
 });
 
-router.post("/film", (req, res) => {
+router.post("/film", async (req, res) => {
   const { filmName, filmDescription, poster, backdrop, premiere, filmCategory } = req.body;
   try {
-    const film = Film.create({
+    const findId = await Film.findOne({ order: ["id", "DESC"] });
+    const newId = findId ? findId.id + 1 : 1;
+    const film = await Film.create({
+      id: newId,
       filmName,
       filmDescription,
       poster,
@@ -83,14 +86,14 @@ router.post("/film", (req, res) => {
       premiere,
       isActive: 1,
     });
-    film.then((result) => {
-      filmCategory.forEach((category: any) => {
-        FilmCategory.create({
-          filmId: result.id,
-          categoryId: category,
-        });
+    filmCategory.forEach((category: any) => {
+      FilmCategory.create({
+        filmId: newId,
+        categoryId: category,
       });
     });
+
+    //TODO: Fix this insert
 
     return res.json(film);
   } catch (err) {
@@ -99,12 +102,12 @@ router.post("/film", (req, res) => {
   }
 });
 
-router.put("/film/:id", (req, res) => {
+router.put("/film/:id", async (req, res) => {
   const { filmName, filmDescription, poster, backdrop, premiere, filmCategory, isActive } =
     req.body;
   const { id } = req.params;
   try {
-    const film = Film.update(
+    const film = await Film.update(
       {
         filmName,
         filmDescription,
@@ -117,15 +120,15 @@ router.put("/film/:id", (req, res) => {
         where: { id },
       }
     );
-    film.then((result) => {
-      FilmCategory.destroy({ where: { filmId: id } });
-      filmCategory.forEach((category: any) => {
-        FilmCategory.create({
-          filmId: id,
-          categoryId: category,
-        });
+    FilmCategory.destroy({ where: { filmId: id } });
+    filmCategory.forEach((category: any) => {
+      FilmCategory.create({
+        filmId: id,
+        categoryId: category,
       });
     });
+
+    //TODO: Fix this update as well
 
     return res.json(film);
   } catch (err) {
@@ -134,10 +137,10 @@ router.put("/film/:id", (req, res) => {
   }
 });
 
-router.delete("/film/:id", (req, res) => {
+router.delete("/film/:id", async (req, res) => {
   const { id } = req.params;
   try {
-    const film = Film.update(
+    const film = await Film.update(
       {
         isActive: 0,
       },
@@ -145,6 +148,7 @@ router.delete("/film/:id", (req, res) => {
         where: { id },
       }
     );
+
     return res.json(film);
   } catch (err) {
     console.log(err);
