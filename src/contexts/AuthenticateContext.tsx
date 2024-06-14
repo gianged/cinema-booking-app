@@ -96,7 +96,7 @@ export const AuthenticateProvider = ({ children }: { children: ReactElement }) =
       role.current = authenticateCookie.authenticate.role;
       setIsLogin(true);
     }
-  }, [isLogin]);
+  }, [isLogin, authenticateCookie.authenticate]);
 
   return (
     <AuthenticateContext.Provider

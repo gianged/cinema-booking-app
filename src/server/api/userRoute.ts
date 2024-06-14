@@ -54,6 +54,17 @@ router.delete("/user/cleanup", async (req, res) => {
   }
 });
 
+router.get("/user/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await User.findOne({ where: { id: id } });
+    return res.json(user);
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ message: "Server-side error" });
+  }
+});
+
 router.get("/user", async (req, res) => {
   try {
     const user = await User.findAll();
@@ -66,13 +77,22 @@ router.get("/user", async (req, res) => {
 
 router.post("/user", async (req, res) => {
   try {
-    const { username, password, role } = req.body;
+    const { username, password, role, isBanned, isActive } = req.body;
     const hashPassword = sha512(password);
     const check = await User.findOne({ where: { username: username } });
     if (check) {
       return res.status(400).json({ message: "User already exists" });
     }
-    const user = await User.create({ username: username, password: hashPassword, role: role });
+    const idUser = await User.findOne({ order: [["id", "DESC"]] });
+    const newId = idUser ? idUser.id + 1 : 1;
+    const user = await User.create({
+      id: newId,
+      username: username,
+      password: hashPassword,
+      role: role,
+      isBanned: isBanned,
+      isActive: isActive,
+    });
     return res.json(user);
   } catch (err) {
     console.log(err);
@@ -84,8 +104,9 @@ router.put("/user/:id", async (req, res) => {
   try {
     const { password, role, isBanned, isActive } = req.body;
     const { id } = req.params;
+    const hashPassword = sha512(password);
     const user = await User.update(
-      { password: password, role: role, isBanned: isBanned, isActive: isActive },
+      { password: hashPassword, role: role, isBanned: isBanned, isActive: isActive },
       { where: { id: id } }
     );
     return res.json(user);
