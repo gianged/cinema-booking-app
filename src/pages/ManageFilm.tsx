@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Button, Form, Input, Modal, Row, Select, Table, TableColumnsType, Upload } from "antd";
 import { displayImageFromBuffer } from "../convert";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPenToSquare, faBan, faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
+import { faPenToSquare, faBan, faPlus, faMinus, faUpload } from "@fortawesome/free-solid-svg-icons";
 import "./ManageFilm.scss";
 
 interface TableDataType {
@@ -118,7 +118,7 @@ export const ManageFilm: React.FC = () => {
   const searchInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     const filterTableData = tableData.filter((data) => {
-      data.filmName.toLowerCase().includes(value);
+      return data.filmName.toLowerCase().includes(value);
     });
     setSearchedTableData(filterTableData);
   };
@@ -186,8 +186,11 @@ export const ManageFilm: React.FC = () => {
               </>
             )}
           </Form.List>
-          <Form.Item label="Film Image" name={"filmImage"}>
-            <Upload />
+          <Form.Item label="Poster" name={"poster"}>
+            <Upload className="upload-image" maxCount={1} multiple={false}>
+              <FontAwesomeIcon className="icon" icon={faUpload} />
+              Upload
+            </Upload>
           </Form.Item>
         </Form>
       </Modal>

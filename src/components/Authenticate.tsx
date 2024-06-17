@@ -105,5 +105,3 @@ export const Authenticate: React.FC = () => {
     </>
   );
 };
-
-//TODO: user setting

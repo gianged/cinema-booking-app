@@ -20,7 +20,7 @@ export const Admin: React.FC = () => {
             <Link to={"/manage/category"}>Categories</Link>
           </Menu.Item>
           <Menu.Item key="show">Show Schedule</Menu.Item>
-          <Menu.Item key="review">Review</Menu.Item>
+          <Menu.Item key="ticket">Ticket</Menu.Item>
         </Menu>
       </Sider>
     </>
