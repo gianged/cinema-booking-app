@@ -16,7 +16,9 @@ export const Home: React.FC = () => {
     <>
       <Layout className="layout">
         <Header className="header">
-          <div className="logo" />
+          <div className="logo">
+            <img className="logo-image" src={process.env.PUBLIC_URL + "/logo192.png"} alt="logo" />
+          </div>
           <Row className="menu" justify="space-between">
             <Col>
               <Menu theme="dark" mode="horizontal" defaultSelectedKeys={["1"]}>
@@ -45,7 +47,16 @@ export const Home: React.FC = () => {
                   <p>Some copyright 2024</p>
                   <p>
                     Data base on{" "}
-                    <a href="https://www.themoviedb.org/">https://www.themoviedb.org/</a>
+                    <a href="https://www.themoviedb.org/" target="_blank">
+                      https://www.themoviedb.org/
+                    </a>
+                  </p>
+                  <p>
+                    Special thanks to{" "}
+                    <a href="https://simulantion.artstation.com/" target="_blank">
+                      Ms. Lan
+                    </a>{" "}
+                    making awesome icons.
                   </p>
                 </Col>
               </Row>

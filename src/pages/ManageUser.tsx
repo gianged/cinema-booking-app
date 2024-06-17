@@ -151,18 +151,10 @@ export const ManageUser: React.FC = () => {
   const [searchedUserTable, setSearchedUserTable] = useState<TableDataType[]>([]);
 
   useEffect(() => {
-    let isEffectActive = true;
-
     userList().then((data: any) => {
-      if (isEffectActive) {
-        setTableList(data);
-        setSearchedUserTable(data);
-      }
+      setTableList(data);
+      setSearchedUserTable(data);
     });
-
-    return () => {
-      isEffectActive = false;
-    };
   }, [formAddUserOpen, formUpdateUserOpen, formDeleteUserOpen]);
 
   const setFormUpdateData = async (id: string) => {

@@ -103,18 +103,10 @@ export const ManageCategory: React.FC = () => {
   const [formUpdate] = Form.useForm();
 
   useEffect(() => {
-    let isEffectActive = true;
-
     categoryList().then((data: any) => {
-      if (isEffectActive) {
-        setTableData(data);
-        setSearchedTableData(data);
-      }
+      setTableData(data);
+      setSearchedTableData(data);
     });
-
-    return () => {
-      isEffectActive = false;
-    };
   }, [modalAddOpen, modalUpdateOpen, modalDeleteOpen]);
 
   const searchInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -148,7 +140,7 @@ export const ManageCategory: React.FC = () => {
         </Button>
         <Input className="searchedInput" placeholder="Search category" onChange={searchInput} />
       </Row>
-      <Table columns={tableColumns} dataSource={searchedTableData} pagination={false} />
+      <Table className="table" columns={tableColumns} dataSource={searchedTableData} pagination={false} />
 
       <Modal
         className="modalAdd"

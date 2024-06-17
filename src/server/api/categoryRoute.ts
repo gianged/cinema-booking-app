@@ -3,6 +3,16 @@ import { Category } from "../models/category";
 
 const router = express.Router();
 
+router.get("/activecategory", async (req, res) => {
+  try {
+    const category = await Category.findAll({ where: { isActive: 1 } });
+    return res.json(category);
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ message: "Server-side error" });
+  }
+});
+
 router.get("/category", async (req, res) => {
   try {
     const category = await Category.findAll();
