@@ -13,8 +13,12 @@ export const Admin: React.FC = () => {
           <Menu.Item key="user">
             <Link to={"/manage/user"}>Users</Link>
           </Menu.Item>
-          <Menu.Item key="film">Films</Menu.Item>
-          <Menu.Item key="category">Categories</Menu.Item>
+          <Menu.Item key="film">
+            <Link to={"/manage/film"}>Films</Link>
+          </Menu.Item>
+          <Menu.Item key="category">
+            <Link to={"/manage/category"}>Categories</Link>
+          </Menu.Item>
           <Menu.Item key="show">Show Schedule</Menu.Item>
           <Menu.Item key="review">Review</Menu.Item>
         </Menu>

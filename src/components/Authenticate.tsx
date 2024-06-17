@@ -70,8 +70,9 @@ export const Authenticate: React.FC = () => {
           labelCol={{ span: 6 }}
           wrapperCol={{ span: 16 }}
           onFinish={(values) => {
-            authenticate.login(values.username, values.password);
-            setModalOpen(false);
+            if (authenticate.login(values.username, values.password)) {
+              setModalOpen(false);
+            }
           }}
         >
           <Form.Item

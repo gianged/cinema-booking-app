@@ -140,15 +140,7 @@ router.put("/film/:id", async (req, res) => {
 router.delete("/film/:id", async (req, res) => {
   const { id } = req.params;
   try {
-    const film = await Film.update(
-      {
-        isActive: 0,
-      },
-      {
-        where: { id },
-      }
-    );
-
+    const film = await Film.destroy({ where: { id } });
     return res.json(film);
   } catch (err) {
     console.log(err);

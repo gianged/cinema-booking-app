@@ -8,6 +8,8 @@ import { LoginPage } from "./pages/LoginPage";
 import { RegisterPage } from "./pages/RegisterPage";
 import { AdminChecking } from "./components/AdminChecking";
 import { ManageUser } from "./pages/ManageUser";
+import { ManageFilm } from "./pages/ManageFilm";
+import { ManageCategory } from "./pages/ManageCategory";
 
 export const App = () => {
   return (
@@ -30,6 +32,8 @@ export const App = () => {
           >
             <Route index element={<HomeContent />} />
             <Route path="user" element={<ManageUser />} />
+            <Route path="film" element={<ManageFilm />} />
+            <Route path="category" element={<ManageCategory />} />
           </Route>
         </Routes>
       </AuthenticateProvider>

@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect, ReactEventHandler } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare, faBan, faPlus } from "@fortawesome/free-solid-svg-icons";
 import {
@@ -62,8 +61,15 @@ const updateUser = async (
   return data;
 };
 
+const deleteUser = async (id: string) => {
+  const response = await fetch(`http://localhost:4000/security/user/${id}`, { method: "DELETE" });
+  const data = await response.json();
+  return data;
+};
+
 interface TableDataType {
   key: React.Key;
+  id: string;
   username: string;
   role: string;
   isBanned: number;
@@ -71,41 +77,17 @@ interface TableDataType {
 }
 
 export const ManageUser: React.FC = () => {
-  const [tableList, setTableList] = useState<any[]>([]);
-  const [formAddUserOpen, setFormAddUserOpen] = useState<boolean>(false);
-  const [formUpdateUserOpen, setFormUpdateUserOpen] = useState<boolean>(false);
-  const [getUserUpdate, setGetUserUpdate] = useState<any>({});
-  const [formUpdate] = Form.useForm();
-  const [updateId, setUpdateId] = useState<string | null>(null);
-
-  useEffect(() => {
-    userList().then((data: any) => {
-      setTableList(data);
-    });
-  }, [formAddUserOpen, formUpdateUserOpen]);
-
-  const setFormUpdateData = async (id: string) => {
-    const data = await getOneUser(id);
-    setGetUserUpdate(data);
-    if (Object.keys(data).length > 0) {
-      formUpdate.setFieldsValue({
-        username: data.username,
-        role: data.role,
-        isBanned: data.isBanned,
-        isActive: data.isActive,
-      });
-    }
-  };
-
   const tableColumns: TableColumnsType<TableDataType> = [
     {
       title: "Id",
       width: 50,
       dataIndex: "id",
+      key: "id",
     },
     {
       title: "Username",
       dataIndex: "username",
+      key: "username",
     },
     {
       title: "Role",
@@ -120,14 +102,17 @@ export const ManageUser: React.FC = () => {
             return "Unknown";
         }
       },
+      key: "role",
     },
     {
       title: "Is Banned",
       dataIndex: "isBanned",
+      key: "isBanned",
     },
     {
       title: "Is Active",
       dataIndex: "isActive",
+      key: "isActive",
     },
     {
       title: "Action",
@@ -143,13 +128,63 @@ export const ManageUser: React.FC = () => {
           >
             <FontAwesomeIcon icon={faPenToSquare} />
           </a>
-          <a>
+          <a
+            onClick={() => {
+              setFormDeleteUserOpen(true);
+              setUpdateId(values.id.toString());
+            }}
+          >
             <FontAwesomeIcon icon={faBan} />
           </a>
         </Space>
       ),
     },
   ];
+
+  const [tableList, setTableList] = useState<TableDataType[]>([]);
+  const [formAddUserOpen, setFormAddUserOpen] = useState<boolean>(false);
+  const [formUpdateUserOpen, setFormUpdateUserOpen] = useState<boolean>(false);
+  const [formDeleteUserOpen, setFormDeleteUserOpen] = useState<boolean>(false);
+  const [getUserUpdate, setGetUserUpdate] = useState<any>({});
+  const [formUpdate] = Form.useForm();
+  const [updateId, setUpdateId] = useState<string | null>(null);
+  const [searchedUserTable, setSearchedUserTable] = useState<TableDataType[]>([]);
+
+  useEffect(() => {
+    let isEffectActive = true;
+
+    userList().then((data: any) => {
+      if (isEffectActive) {
+        setTableList(data);
+        setSearchedUserTable(data);
+      }
+    });
+
+    return () => {
+      isEffectActive = false;
+    };
+  }, [formAddUserOpen, formUpdateUserOpen, formDeleteUserOpen]);
+
+  const setFormUpdateData = async (id: string) => {
+    const data = await getOneUser(id);
+    setGetUserUpdate(data);
+    if (Object.keys(data).length > 0) {
+      formUpdate.setFieldsValue({
+        username: data.username,
+        role: data.role,
+        isBanned: data.isBanned,
+        isActive: data.isActive,
+      });
+    }
+  };
+
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.toLowerCase();
+    const filtered = tableList.filter((user) => {
+      return user.username.toLowerCase().includes(value);
+    });
+    setSearchedUserTable(filtered);
+  };
 
   return (
     <>
@@ -162,10 +197,11 @@ export const ManageUser: React.FC = () => {
         >
           Add User
         </Button>
+        <Input className="searchedInput" placeholder="Search username" onChange={handleSearch} />
       </Row>
-      <Table columns={tableColumns} dataSource={tableList} pagination={false} bordered />
+      <Table columns={tableColumns} dataSource={searchedUserTable} pagination={false} bordered />
       <Modal
-        className="modalAddUser"
+        className="modalAdd"
         open={formAddUserOpen}
         title="Add User"
         footer={null}
@@ -174,7 +210,7 @@ export const ManageUser: React.FC = () => {
         }}
       >
         <Form
-          className="formAddUser"
+          className="formAdd"
           labelCol={{ span: 6 }}
           wrapperCol={{ span: 16 }}
           layout="horizontal"
@@ -187,7 +223,9 @@ export const ManageUser: React.FC = () => {
               values.isActive
             );
             setFormAddUserOpen(false);
+            console.log(values);
           }}
+          initialValues={{ isBanned: false, isActive: false }}
         >
           <Form.Item label="Username" name={"username"} required>
             <Input />
@@ -201,11 +239,11 @@ export const ManageUser: React.FC = () => {
               <Select.Option value="a">Admin</Select.Option>
             </Select>
           </Form.Item>
-          <Form.Item wrapperCol={{ offset: 6 }} name={"isBanned"}>
+          <Form.Item wrapperCol={{ offset: 6 }} name={"isBanned"} valuePropName="checked">
             <Checkbox>Banned</Checkbox>
           </Form.Item>
-          <Form.Item wrapperCol={{ offset: 6 }} name={"isActive"}>
-            <Checkbox checked>Active</Checkbox>
+          <Form.Item wrapperCol={{ offset: 6 }} name={"isActive"} valuePropName="checked">
+            <Checkbox>Active</Checkbox>
           </Form.Item>
           <Form.Item wrapperCol={{ offset: 3 }}>
             <Space>
@@ -219,7 +257,7 @@ export const ManageUser: React.FC = () => {
       </Modal>
 
       <Modal
-        className="modalUpdateUser"
+        className="modalUpdate"
         open={formUpdateUserOpen}
         title="Update User"
         footer={null}
@@ -229,7 +267,7 @@ export const ManageUser: React.FC = () => {
       >
         <Form
           form={formUpdate}
-          className="formUpdateUser"
+          className="formUpdate"
           labelCol={{ span: 6 }}
           wrapperCol={{ span: 16 }}
           layout="horizontal"
@@ -244,8 +282,8 @@ export const ManageUser: React.FC = () => {
               values.isBanned,
               values.isActive
             );
-            setFormUpdateUserOpen(false);
             setUpdateId(null);
+            setFormUpdateUserOpen(false);
           }}
         >
           <Form.Item label="Username" name={"username"} initialValue={getUserUpdate.username}>
@@ -260,10 +298,10 @@ export const ManageUser: React.FC = () => {
               <Select.Option value="a">Admin</Select.Option>
             </Select>
           </Form.Item>
-          <Form.Item wrapperCol={{ offset: 6 }} name={"isBanned"}>
+          <Form.Item wrapperCol={{ offset: 6 }} name={"isBanned"} valuePropName="checked">
             <Checkbox>Banned</Checkbox>
           </Form.Item>
-          <Form.Item wrapperCol={{ offset: 6 }} name={"isActive"}>
+          <Form.Item wrapperCol={{ offset: 6 }} name={"isActive"} valuePropName="checked">
             <Checkbox checked>Active</Checkbox>
           </Form.Item>
           <Form.Item wrapperCol={{ offset: 3 }}>
@@ -275,6 +313,32 @@ export const ManageUser: React.FC = () => {
             </Space>
           </Form.Item>
         </Form>
+      </Modal>
+
+      <Modal
+        className="modalDelete"
+        open={formDeleteUserOpen}
+        title="Delete User"
+        footer={null}
+        onCancel={() => {
+          setFormDeleteUserOpen(false);
+        }}
+      >
+        <p>Are you sure you want to delete this user?</p>
+        <Space>
+          <Button
+            type="primary"
+            danger
+            onClick={() => {
+              deleteUser(updateId ?? "0");
+              setUpdateId(null);
+              setFormDeleteUserOpen(false);
+            }}
+          >
+            Yes
+          </Button>
+          <Button onClick={() => setFormDeleteUserOpen(false)}>No</Button>
+        </Space>
       </Modal>
     </>
   );

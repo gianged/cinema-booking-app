@@ -14,7 +14,7 @@ interface AuthenticateContextType {
   isLogin: boolean;
   setIsLogin: Dispatch<SetStateAction<boolean>>;
   role?: MutableRefObject<number>;
-  login: (username: string, password: string) => void;
+  login: (username: string, password: string) => boolean;
   logout: () => void;
   id?: MutableRefObject<number | undefined>;
   displayName?: MutableRefObject<string | undefined>;
@@ -26,7 +26,7 @@ export const AuthenticateContext = createContext<AuthenticateContextType>({
   isLogin: false,
   setIsLogin: () => {},
   role: undefined,
-  login: () => {},
+  login: () => false,
   logout: () => {},
   id: undefined,
   displayName: undefined,
@@ -66,11 +66,11 @@ export const AuthenticateProvider = ({ children }: { children: ReactElement }) =
     removeAuthenticateCookie("authenticate");
   };
 
-  const login = (username: string, password: string) => {
+  const login = (username: string, password: string): boolean => {
     getUser(username, password).then((data) => {
       if (!data.hasOwnProperty("id")) {
         setLoginError("Username or password is incorrect");
-        return;
+        return false;
       } else if (data.isActive === 1 && data.isBanned === 0) {
         setLoginError(null);
         setIsLogin(true);
@@ -85,8 +85,10 @@ export const AuthenticateProvider = ({ children }: { children: ReactElement }) =
           displayName: displayName.current,
           role: role.current,
         });
+        return true;
       }
     });
+    return false;
   };
 
   useEffect(() => {

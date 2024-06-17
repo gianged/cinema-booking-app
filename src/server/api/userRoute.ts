@@ -119,7 +119,7 @@ router.put("/user/:id", async (req, res) => {
 router.delete("/user/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const user = await User.update({ isactive: false }, { where: { id: id } });
+    const user = await User.destroy({ where: { id: id } });
     return res.json(user);
   } catch (err) {
     console.log(err);
