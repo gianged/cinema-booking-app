@@ -34,7 +34,6 @@ router.post("/register", async (req, res) => {
       username: username,
       password: hashPassword,
       role: "u",
-      isBanned: 0,
       isActive: 1,
     });
     return res.json(user);
@@ -77,7 +76,7 @@ router.get("/user", async (req, res) => {
 
 router.post("/user", async (req, res) => {
   try {
-    const { username, password, role, isBanned, isActive } = req.body;
+    const { username, password, role, isActive } = req.body;
     const hashPassword = sha512(password);
     const check = await User.findOne({ where: { username: username } });
     if (check) {
@@ -90,7 +89,6 @@ router.post("/user", async (req, res) => {
       username: username,
       password: hashPassword,
       role: role,
-      isBanned: isBanned,
       isActive: isActive,
     });
     return res.json(user);
@@ -102,11 +100,11 @@ router.post("/user", async (req, res) => {
 
 router.put("/user/:id", async (req, res) => {
   try {
-    const { password, role, isBanned, isActive } = req.body;
+    const { password, role, isActive } = req.body;
     const { id } = req.params;
     const hashPassword = sha512(password);
     const user = await User.update(
-      { password: hashPassword, role: role, isBanned: isBanned, isActive: isActive },
+      { password: hashPassword, role: role, isActive: isActive },
       { where: { id: id } }
     );
     return res.json(user);

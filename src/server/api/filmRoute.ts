@@ -73,9 +73,9 @@ router.get("/film", async (req, res) => {
 });
 
 router.post("/film", async (req, res) => {
-  const { filmName, filmDescription, poster, backdrop, premiere, filmCategory } = req.body;
+  const { filmName, filmDescription, poster, backdrop, premiere, isActive, categories } = req.body;
   try {
-    const findId = await Film.findOne({ order: ["id", "DESC"] });
+    const findId = await Film.findOne({ order: [["id", "DESC"]] });
     const newId = findId ? findId.id + 1 : 1;
     const film = await Film.create({
       id: newId,
@@ -84,9 +84,9 @@ router.post("/film", async (req, res) => {
       poster,
       backdrop,
       premiere,
-      isActive: 1,
+      isActive,
     });
-    filmCategory.forEach((category: any) => {
+    categories.forEach((category: any) => {
       FilmCategory.create({
         filmId: newId,
         categoryId: category,

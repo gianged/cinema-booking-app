@@ -1,5 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { Button, Form, Input, Modal, Row, Select, Table, TableColumnsType, Upload } from "antd";
+import {
+  Button,
+  Checkbox,
+  DatePicker,
+  Form,
+  Input,
+  Modal,
+  Row,
+  Select,
+  Table,
+  TableColumnsType,
+  Upload,
+} from "antd";
 import { displayImageFromBuffer } from "../convert";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare, faBan, faPlus, faMinus, faUpload } from "@fortawesome/free-solid-svg-icons";
@@ -14,7 +26,7 @@ interface TableDataType {
   backdrop: string;
   premiere: Date;
   trailer: string;
-  isActive: boolean;
+  isActive: number;
 }
 
 const categoryList = async () => {
@@ -25,6 +37,37 @@ const categoryList = async () => {
 
 const filmList = async () => {
   const response = await fetch("http://localhost:4000/film", { method: "GET" });
+  const data = await response.json();
+  return data;
+};
+
+const addFilm = async (
+  filmName: string,
+  filmDescription: string,
+  poster: File,
+  backdrop: File,
+  categories: number[],
+  premiere: Date,
+  trailer: string,
+  isActive: number
+) => {
+
+  const response = await fetch("http://localhost:4000/film", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      filmName: filmName,
+      filmDescription: filmDescription,
+      poster: poster,
+      backdrop: backdrop,
+      categories: categories,
+      premiere: premiere,
+      trailer: trailer,
+      isActive: isActive,
+    }),
+  });
   const data = await response.json();
   return data;
 };
@@ -101,8 +144,8 @@ export const ManageFilm: React.FC = () => {
   useEffect(() => {
     filmList().then((data: any) => {
       data.forEach((item: any) => {
-        item.poster = displayImageFromBuffer(item.poster.data);
-        item.backdrop = displayImageFromBuffer(item.backdrop.data);
+        item.poster = item.poster?.data ? displayImageFromBuffer(item.poster.data) : null;
+        item.backdrop = item.backdrop?.data ? displayImageFromBuffer(item.backdrop.data) : null;
       });
       setTableData(data);
       setSearchedTableData(data);
@@ -152,45 +195,63 @@ export const ManageFilm: React.FC = () => {
           labelCol={{ span: 6 }}
           wrapperCol={{ span: 16 }}
           layout="horizontal"
+          onFinish={(values) => {
+            addFilm(
+              values.filmName,
+              values.filmDescription,
+              values.poster,
+              values.backdrop,
+              values.categories,
+              values.premiere,
+              values.trailer,
+              values.isActive
+            );
+            setModalAddOpen(false);
+          }}
         >
           <Form.Item label="Film Name" name={"filmName"} required>
             <Input />
           </Form.Item>
-          <Form.Item label="Film Description" name={"filmDescription"}>
+          <Form.Item label="Film Description" name={"filmDescription"} required>
             <Input />
           </Form.Item>
-          <Form.List name="categories">
-            {(items, { add, remove }) => (
-              <>
-                {items.map((item, index) => (
-                  <Form.Item key={item.key} label={`Category ${index + 1}`}>
-                    <Select
-                      {...item}
-                      options={categorySelectList.map((category) => ({
-                        label: category.categoryName,
-                        value: category.id,
-                      }))}
-                    />
-                    {items.length > 1 && (
-                      <Button type="dashed" onClick={() => remove(item.name)}>
-                        X
-                      </Button>
-                    )}
-                  </Form.Item>
-                ))}
-                <Form.Item>
-                  <Button type="dashed" onClick={() => add()}>
-                    Add Category
-                  </Button>
-                </Form.Item>
-              </>
-            )}
-          </Form.List>
+          <Form.Item label="Category" name={"categories"}>
+            <Select mode="multiple" placeholder="Select category">
+              {categorySelectList.map((category) => {
+                return (
+                  <Select.Option key={category.id} value={category.id}>
+                    {category.categoryName}
+                  </Select.Option>
+                );
+              })}
+            </Select>
+          </Form.Item>
           <Form.Item label="Poster" name={"poster"}>
             <Upload className="upload-image" maxCount={1} multiple={false}>
               <FontAwesomeIcon className="icon" icon={faUpload} />
               Upload
             </Upload>
+          </Form.Item>
+          <Form.Item label="Backdrop" name={"backdrop"}>
+            <Upload className="upload-image" maxCount={1} multiple={false}>
+              <FontAwesomeIcon className="icon" icon={faUpload} />
+              Upload
+            </Upload>
+          </Form.Item>
+          <Form.Item label="Premiere" name={"premiere"}>
+            <DatePicker />
+          </Form.Item>
+          <Form.Item label="Trailer" name={"trailer"}>
+            <Input />
+          </Form.Item>
+          <Form.Item wrapperCol={{ span: 6 }} name={"isActive"} valuePropName="checked">
+            <Checkbox>Active</Checkbox>
+          </Form.Item>
+          <Form.Item>
+            <Button type="primary" htmlType="submit">
+              Add Film
+            </Button>
+            <Button onClick={() => setModalAddOpen(false)}>Close</Button>
           </Form.Item>
         </Form>
       </Modal>

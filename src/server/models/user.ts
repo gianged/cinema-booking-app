@@ -13,7 +13,6 @@ export class User extends Model {
   declare username: string;
   declare password: string;
   declare role: string;
-  declare isBanned: number;
   declare isActive: number;
 }
 
@@ -36,10 +35,6 @@ User.init(
     role: {
       type: DataTypes.STRING,
       defaultValue: "u",
-    },
-    isBanned: {
-      type: DataTypes.TINYINT,
-      defaultValue: 0,
     },
     isActive: {
       type: DataTypes.TINYINT,

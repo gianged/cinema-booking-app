@@ -31,7 +31,6 @@ const userAdd = async (
   username: string,
   password: string,
   role: string,
-  isBanned: number,
   isActive: number
 ) => {
   const response = await fetch("http://localhost:4000/security/user", {
@@ -39,7 +38,7 @@ const userAdd = async (
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ username, password, role, isBanned, isActive }),
+    body: JSON.stringify({ username, password, role, isActive }),
   });
   const data = await response.json();
   return data;
@@ -49,13 +48,12 @@ const updateUser = async (
   id: string,
   password: string,
   role: string,
-  isBanned: number,
   isActive: number
 ) => {
   const response = await fetch(`http://localhost:4000/security/user/${id}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ password, role, isBanned, isActive }),
+    body: JSON.stringify({ password, role, isActive }),
   });
   const data = await response.json();
   return data;
@@ -103,11 +101,6 @@ export const ManageUser: React.FC = () => {
         }
       },
       key: "role",
-    },
-    {
-      title: "Is Banned",
-      dataIndex: "isBanned",
-      key: "isBanned",
     },
     {
       title: "Is Active",
@@ -211,7 +204,6 @@ export const ManageUser: React.FC = () => {
               values.username,
               values.password,
               values.role,
-              values.isBanned,
               values.isActive
             );
             setFormAddUserOpen(false);
@@ -230,9 +222,6 @@ export const ManageUser: React.FC = () => {
               <Select.Option value="u">User</Select.Option>
               <Select.Option value="a">Admin</Select.Option>
             </Select>
-          </Form.Item>
-          <Form.Item wrapperCol={{ offset: 6 }} name={"isBanned"} valuePropName="checked">
-            <Checkbox>Banned</Checkbox>
           </Form.Item>
           <Form.Item wrapperCol={{ offset: 6 }} name={"isActive"} valuePropName="checked">
             <Checkbox>Active</Checkbox>
@@ -271,7 +260,6 @@ export const ManageUser: React.FC = () => {
               updateId ?? "0",
               values.password,
               values.role,
-              values.isBanned,
               values.isActive
             );
             setUpdateId(null);
@@ -289,9 +277,6 @@ export const ManageUser: React.FC = () => {
               <Select.Option value="u">User</Select.Option>
               <Select.Option value="a">Admin</Select.Option>
             </Select>
-          </Form.Item>
-          <Form.Item wrapperCol={{ offset: 6 }} name={"isBanned"} valuePropName="checked">
-            <Checkbox>Banned</Checkbox>
           </Form.Item>
           <Form.Item wrapperCol={{ offset: 6 }} name={"isActive"} valuePropName="checked">
             <Checkbox checked>Active</Checkbox>

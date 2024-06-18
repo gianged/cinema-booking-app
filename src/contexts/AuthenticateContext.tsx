@@ -71,7 +71,10 @@ export const AuthenticateProvider = ({ children }: { children: ReactElement }) =
       if (!data.hasOwnProperty("id")) {
         setLoginError("Username or password is incorrect");
         return false;
-      } else if (data.isActive === 1 && data.isBanned === 0) {
+      } else if (data.isActive === 0) {
+        setLoginError("Your account is disabled");
+        return false;
+      } else if (data.isActive === 1) {
         setLoginError(null);
         setIsLogin(true);
         id.current = data.id;
