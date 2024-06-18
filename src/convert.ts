@@ -25,3 +25,15 @@ export const displayImageFromBuffer = (arr: []) => {
   const base64 = btoa(string);
   return `data:image/jpeg;base64,${base64}`;
 };
+
+export const fileToBase64 = (file: File) => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = (error) => {
+      console.error("Error occurred while reading file:", error);
+      reject(error);
+    };
+  });
+};

@@ -19,7 +19,9 @@ export const Admin: React.FC = () => {
           <Menu.Item key="category">
             <Link to={"/manage/category"}>Categories</Link>
           </Menu.Item>
-          <Menu.Item key="show">Show Schedule</Menu.Item>
+          <Menu.Item key="show">
+            <Link to={"/manage/show"}></Link>Show Schedule
+          </Menu.Item>
           <Menu.Item key="ticket">Ticket</Menu.Item>
         </Menu>
       </Sider>

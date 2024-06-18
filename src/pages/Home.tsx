@@ -46,7 +46,7 @@ export const Home: React.FC = () => {
                 <Col span={24}>
                   <p>Some copyright 2024</p>
                   <p>
-                    Data base on{" "}
+                    Data based on{" "}
                     <a href="https://www.themoviedb.org/" target="_blank">
                       https://www.themoviedb.org/
                     </a>

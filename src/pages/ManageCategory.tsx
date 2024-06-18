@@ -140,7 +140,13 @@ export const ManageCategory: React.FC = () => {
         </Button>
         <Input className="searchedInput" placeholder="Search category" onChange={searchInput} />
       </Row>
-      <Table className="table" columns={tableColumns} dataSource={searchedTableData} pagination={false} />
+
+      <Table
+        className="tableCategory"
+        columns={tableColumns}
+        dataSource={searchedTableData}
+        pagination={false}
+      />
 
       <Modal
         className="modalAdd"
@@ -213,7 +219,13 @@ export const ManageCategory: React.FC = () => {
               <Button type="primary" htmlType="submit">
                 Update
               </Button>
-              <Button type="default" onClick={() => setModalUpdateOpen(false)}>
+              <Button
+                type="default"
+                onClick={() => {
+                  setModalUpdateOpen(false);
+                  setSelectCategoryId(null);
+                }}
+              >
                 Cancel
               </Button>
             </Space>
@@ -241,7 +253,13 @@ export const ManageCategory: React.FC = () => {
           >
             Yes
           </Button>
-          <Button type="default" onClick={() => setModalDeleteOpen(false)}>
+          <Button
+            type="default"
+            onClick={() => {
+              setModalDeleteOpen(false);
+              setSelectCategoryId(null);
+            }}
+          >
             No
           </Button>
         </Space>

@@ -1,7 +1,8 @@
 import express from "express";
 import { ShowSchedule } from "../models/show_schedule";
 import { Film } from "../models/film";
-import { Op } from "sequelize";
+import { Op, where } from "sequelize";
+import dayjs from "dayjs";
 
 const router = express.Router();
 
@@ -24,21 +25,43 @@ router.get("/show", async (req, res) => {
   }
 });
 
+router.get("/show/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const show = await ShowSchedule.findOne({ where: { id }, include: [Film] });
+    return res.json(show);
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ message: "Server-side error" });
+  }
+});
+
 router.post("/show", async (req, res) => {
   try {
-    const { film, showPrice, beginTime, endTime, room } = req.body;
+    const { film, showPrice, showDay, beginTime, room, isActive } = req.body;
 
     const beginTimeDate = new Date(beginTime);
-    const endTimeDate = new Date(endTime);
+    const beginTimeString = beginTimeDate.toLocaleTimeString("en-US", { hour12: false });
+    const endTimeDate = new Date(beginTime);
+    endTimeDate.setHours(endTimeDate.getHours() + 2);
+    const endTimeString = endTimeDate.toLocaleTimeString("en-US", { hour12: false });
+
     const existingShow = await ShowSchedule.findOne({
       where: {
-        beginTime: {
-          [Op.lte]: endTimeDate,
+        showDay: {
+          [Op.eq]: showDay,
         },
-        endTime: {
-          [Op.gte]: beginTimeDate,
+        [Op.or]: {
+          beginTime: {
+            [Op.lte]: endTimeString,
+          },
+          endTime: {
+            [Op.gte]: beginTimeString,
+          },
         },
-        room,
+        room: {
+          [Op.eq]: room,
+        },
       },
     });
 
@@ -53,13 +76,77 @@ router.post("/show", async (req, res) => {
       id: newId,
       film,
       showPrice,
-      beginTime,
-      endTime,
+      showDay,
+      beginTime: beginTimeString,
+      endTime: endTimeString,
       room,
-      isActive: 1,
+      isActive,
     });
 
     return res.json(newShow);
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ message: "Server-side error" });
+  }
+});
+
+router.put("/show/:id", async (req, res) => {
+  const { film, showPrice, showDay, beginTime, room, isActive } = req.body;
+  const { id } = req.params;
+  try {
+    const beginTimeDate = new Date(beginTime);
+    const beginTimeString = beginTimeDate.toLocaleTimeString("en-US", { hour12: false });
+    const endTimeDate = new Date(beginTime);
+    endTimeDate.setHours(endTimeDate.getHours() + 2);
+    const endTimeString = endTimeDate.toLocaleTimeString("en-US", { hour12: false });
+
+    const existingShow = await ShowSchedule.findOne({
+      where: {
+        showDay: {
+          [Op.eq]: showDay,
+        },
+        [Op.or]: {
+          beginTime: {
+            [Op.lte]: endTimeString,
+          },
+          endTime: {
+            [Op.gte]: beginTimeString,
+          },
+        },
+        room: {
+          [Op.eq]: room,
+        },
+      },
+    });
+
+    if (existingShow) {
+      return res.status(400).json({ message: "Show already exists at this time" });
+    }
+
+    const show = await ShowSchedule.update(
+      {
+        film,
+        showPrice,
+        showDay,
+        beginTime: beginTimeString,
+        endTime: endTimeString,
+        room,
+        isActive,
+      },
+      { where: { id } }
+    );
+    return res.json(show);
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ message: "Server-side error" });
+  }
+});
+
+router.delete("/show/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const show = await ShowSchedule.destroy({ where: { id } });
+    return res.json(show);
   } catch (err) {
     console.log(err);
     return res.status(500).json({ message: "Server-side error" });

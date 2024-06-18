@@ -10,6 +10,7 @@ import { AdminChecking } from "./components/AdminChecking";
 import { ManageUser } from "./pages/ManageUser";
 import { ManageFilm } from "./pages/ManageFilm";
 import { ManageCategory } from "./pages/ManageCategory";
+import { ManageShow } from "./pages/ManageShow";
 
 export const App = () => {
   return (
@@ -34,6 +35,7 @@ export const App = () => {
             <Route path="user" element={<ManageUser />} />
             <Route path="film" element={<ManageFilm />} />
             <Route path="category" element={<ManageCategory />} />
+            <Route path="show" element={<ManageShow />} />
           </Route>
         </Routes>
       </AuthenticateProvider>

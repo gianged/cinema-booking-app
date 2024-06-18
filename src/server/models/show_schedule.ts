@@ -16,7 +16,7 @@ export class ShowSchedule extends Model {
   declare beginTime: Date;
   declare endTime: Date;
   declare room: string;
-  declare isActived: number;
+  declare isActive: number;
 }
 
 ShowSchedule.init(
@@ -35,17 +35,29 @@ ShowSchedule.init(
     showPrice: {
       type: DataTypes.INTEGER,
     },
-    beginTime: {
+    showDay: {
       type: DataTypes.DATE,
     },
+    beginTime: {
+      type: DataTypes.TIME,
+    },
     endTime: {
-      type: DataTypes.DATE,
+      type: DataTypes.TIME,
     },
     room: {
       type: DataTypes.STRING,
     },
     isActive: {
       type: DataTypes.INTEGER,
+    },
+    filmName: {
+      type: DataTypes.VIRTUAL,
+      get(this: any) {
+        if (this.get("Film")) {
+          return this.get("Film").filmName;
+        }
+        return "";
+      },
     },
   },
   {

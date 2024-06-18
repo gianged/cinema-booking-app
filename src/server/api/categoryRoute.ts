@@ -3,7 +3,7 @@ import { Category } from "../models/category";
 
 const router = express.Router();
 
-router.get("/activecategory", async (req, res) => {
+router.get("/category/active", async (req, res) => {
   try {
     const category = await Category.findAll({ where: { isActive: 1 } });
     return res.json(category);

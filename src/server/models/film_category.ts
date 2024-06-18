@@ -48,12 +48,12 @@ FilmCategory.init(
 FilmCategory.belongsTo(Film, { foreignKey: "filmId", onDelete: "CASCADE", onUpdate: "CASCADE" });
 FilmCategory.belongsTo(Category, {
   foreignKey: "categoryId",
-  onDelete: "SET NULL",
-  onUpdate: "SET NULL",
+  onDelete: "CASCADE",
+  onUpdate: "CASCADE",
 });
 Film.hasMany(FilmCategory, { foreignKey: "filmId", onDelete: "CASCADE", onUpdate: "CASCADE" });
 Category.hasMany(FilmCategory, {
   foreignKey: "categoryId",
-  onDelete: "SET NULL",
-  onUpdate: "SET NULL",
+  onDelete: "CASCADE",
+  onUpdate: "CASCADE",
 });

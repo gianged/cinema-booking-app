@@ -18,6 +18,16 @@ router.get("/film/currentshow", async (req, res) => {
   }
 });
 
+router.get("/film/active", async (req, res) => {
+  try {
+    const film = await Film.findAll({ where: { isActive: true } });
+    return res.json(film);
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ message: "Server-side error" });
+  }
+});
+
 router.get("/film/:id", async (req, res) => {
   const { id } = req.params;
   try {
@@ -74,6 +84,11 @@ router.get("/film", async (req, res) => {
 
 router.post("/film", async (req, res) => {
   const { filmName, filmDescription, poster, backdrop, premiere, isActive, categories } = req.body;
+  const posterBase64Data = poster ? poster.replace(/^data:([A-Za-z-+/]+);base64,/, "") : "";
+  const backdropBase64Data = backdrop ? backdrop.replace(/^data:([A-Za-z-+/]+);base64,/, "") : "";
+  const posterBuffer = Buffer.from(posterBase64Data, "base64");
+  const backdropBuffer = Buffer.from(backdropBase64Data, "base64");
+
   try {
     const findId = await Film.findOne({ order: [["id", "DESC"]] });
     const newId = findId ? findId.id + 1 : 1;
@@ -81,17 +96,19 @@ router.post("/film", async (req, res) => {
       id: newId,
       filmName,
       filmDescription,
-      poster,
-      backdrop,
+      posterBuffer,
+      backdropBuffer,
       premiere,
       isActive,
     });
-    categories.forEach((category: any) => {
-      FilmCategory.create({
-        filmId: newId,
-        categoryId: category,
+    if (categories) {
+      categories.forEach((category: any) => {
+        FilmCategory.create({
+          filmId: newId,
+          categoryId: category,
+        });
       });
-    });
+    }
 
     //TODO: Fix this insert
 
@@ -103,30 +120,28 @@ router.post("/film", async (req, res) => {
 });
 
 router.put("/film/:id", async (req, res) => {
-  const { filmName, filmDescription, poster, backdrop, premiere, filmCategory, isActive } =
-    req.body;
+  const { filmName, filmDescription, premiere, categories, isActive } = req.body;
   const { id } = req.params;
   try {
     const film = await Film.update(
       {
         filmName,
         filmDescription,
-        poster,
-        backdrop,
         premiere,
         isActive,
       },
-      {
-        where: { id },
-      }
+      { where: { id } }
     );
-    FilmCategory.destroy({ where: { filmId: id } });
-    filmCategory.forEach((category: any) => {
-      FilmCategory.create({
-        filmId: id,
-        categoryId: category,
+
+    if (categories) {
+      FilmCategory.destroy({ where: { filmId: id } });
+      categories.forEach((category: any) => {
+        FilmCategory.create({
+          filmId: id,
+          categoryId: category,
+        });
       });
-    });
+    }
 
     //TODO: Fix this update as well
 

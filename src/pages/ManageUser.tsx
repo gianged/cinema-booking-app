@@ -27,12 +27,7 @@ const getOneUser = async (id: string) => {
   return data;
 };
 
-const userAdd = async (
-  username: string,
-  password: string,
-  role: string,
-  isActive: number
-) => {
+const userAdd = async (username: string, password: string, role: string, isActive: number) => {
   const response = await fetch("http://localhost:4000/security/user", {
     method: "POST",
     headers: {
@@ -44,12 +39,7 @@ const userAdd = async (
   return data;
 };
 
-const updateUser = async (
-  id: string,
-  password: string,
-  role: string,
-  isActive: number
-) => {
+const updateUser = async (id: string, password: string, role: string, isActive: number) => {
   const response = await fetch(`http://localhost:4000/security/user/${id}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
@@ -200,12 +190,7 @@ export const ManageUser: React.FC = () => {
           wrapperCol={{ span: 16 }}
           layout="horizontal"
           onFinish={(values) => {
-            userAdd(
-              values.username,
-              values.password,
-              values.role,
-              values.isActive
-            );
+            userAdd(values.username, values.password, values.role, values.isActive);
             setFormAddUserOpen(false);
             console.log(values);
           }}
@@ -256,12 +241,7 @@ export const ManageUser: React.FC = () => {
             if (values.password === undefined) {
               values.password = getUserUpdate.password;
             }
-            updateUser(
-              updateId ?? "0",
-              values.password,
-              values.role,
-              values.isActive
-            );
+            updateUser(updateId ?? "0", values.password, values.role, values.isActive);
             setUpdateId(null);
             setFormUpdateUserOpen(false);
           }}
@@ -286,7 +266,14 @@ export const ManageUser: React.FC = () => {
               <Button type="primary" htmlType="submit">
                 Update User
               </Button>
-              <Button onClick={() => setFormUpdateUserOpen(false)}>Close</Button>
+              <Button
+                onClick={() => {
+                  setFormUpdateUserOpen(false);
+                  setUpdateId(null);
+                }}
+              >
+                Close
+              </Button>
             </Space>
           </Form.Item>
         </Form>
@@ -314,7 +301,14 @@ export const ManageUser: React.FC = () => {
           >
             Yes
           </Button>
-          <Button onClick={() => setFormDeleteUserOpen(false)}>No</Button>
+          <Button
+            onClick={() => {
+              setFormDeleteUserOpen(false);
+              setUpdateId(null);
+            }}
+          >
+            No
+          </Button>
         </Space>
       </Modal>
     </>
