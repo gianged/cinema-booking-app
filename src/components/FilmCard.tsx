@@ -43,12 +43,6 @@ export const FilmCard: React.FC = () => {
           <Card hoverable className="filmCard">
             <img className="filmCardImage" alt="Poster" src={item.poster} />
             <div className="filmCardHover">
-              <Button>
-                <Link to={"/"}>
-                  <FontAwesomeIcon className="filmCardIcon" icon={faReceipt} />
-                  Book
-                </Link>
-              </Button>
               <Link to={`/filmdetail/${item.id}`}>
                 <Button>
                   <FontAwesomeIcon className="filmCardIcon" icon={faCircleInfo} />

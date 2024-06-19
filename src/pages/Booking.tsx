@@ -11,7 +11,7 @@ export const Booking: React.FC = () => {
   const navigate = useNavigate();
   const bookingData = useContext(BookingContext);
 
-  const seats = Array.from({ length: 50 }, (_, i) => i + 1); // Generate 50 seats
+  const seats = Array.from({ length: 50 }, (_, i) => i + 1);
 
   const toggleSeat = (seat: string) => {
     setSelectedSeats((prev) =>
@@ -37,6 +37,10 @@ export const Booking: React.FC = () => {
             className="book-button"
             type="primary"
             onClick={() => {
+              if (selectedSeats.length < 1) {
+                alert("Please select at least one seat");
+                return;
+              }
               bookingData.setSeatAmount(selectedSeats.length);
               navigate("/payment");
             }}

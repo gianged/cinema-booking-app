@@ -23,7 +23,7 @@ export const FilmSchedule: React.FC = () => {
 
   return (
     <>
-      <Row gutter={[16, 16]}>
+      <Row gutter={[16, 16]} justify={"center"}>
         {show.map((item: any) => (
           <Col span={3}>
             <Card
