@@ -1,9 +1,48 @@
 .filmDetail {
   width: 80%;
   margin-top: 24px;
-  .filmDetailImage {
-    width: 100%;
-    height: 350px;
-    object-fit: cover;
+
+  .image-container {
+    .filmDetailImage {
+      width: 100%;
+      height: 350px;
+      object-fit: cover;
+    }
+
+    .play-button {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: cyan;
+      opacity: 0;
+      transform: opacity 0.3s ease;
+    }
+
+    &:hover .play-button {
+      opacity: 1;
+      cursor: pointer;
+    }
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      background: rgba(0, 0, 0, 0);
+      transition: background 0.3s ease;
+    }
+
+    &:hover::before {
+      background: rgba(0, 0, 0, 0.5);
+    }
   }
+}
+
+.button {
+  margin: 24px;
+  margin-inline-start: 20%;
+  width: 250px;
 }

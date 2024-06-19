@@ -6,6 +6,32 @@ import dayjs from "dayjs";
 
 const router = express.Router();
 
+router.get("/show/active/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const today = new Date();
+    today.setHours(7, 0, 0, 0);
+    const show = await ShowSchedule.findAll({
+      where: {
+        film: id,
+        beginTime: {
+          [Op.gte]: today,
+        },
+        isActive: true,
+      },
+      order: [
+        ["showDay", "ASC"],
+        ["beginTime", "ASC"],
+      ],
+      include: [Film],
+    });
+    return res.json(show);
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ message: "Server-side error" });
+  }
+});
+
 router.get("/show", async (req, res) => {
   try {
     const today = new Date();

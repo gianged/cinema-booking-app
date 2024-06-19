@@ -6,6 +6,7 @@ import userRouter from "./api/userRoute";
 import filmRouter from "./api/filmRoute";
 import showRouter from "./api/showRoute";
 import categoryRoute from "./api/categoryRoute";
+import ticketRouter from "./api/ticketRoute";
 
 const app = express();
 const host = "localhost";
@@ -42,3 +43,4 @@ app.use("/security", userRouter);
 app.use(filmRouter);
 app.use(showRouter);
 app.use(categoryRoute);
+app.use(ticketRouter);

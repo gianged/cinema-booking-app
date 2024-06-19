@@ -23,7 +23,6 @@ Ticket.init(
     idTicket: {
       type: DataTypes.INTEGER,
       primaryKey: true,
-      allowNull: false,
     },
     idUser: {
       type: DataTypes.INTEGER,

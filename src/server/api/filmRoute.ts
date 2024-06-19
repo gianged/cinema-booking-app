@@ -83,7 +83,8 @@ router.get("/film", async (req, res) => {
 });
 
 router.post("/film", async (req, res) => {
-  const { filmName, filmDescription, poster, backdrop, premiere, isActive, categories } = req.body;
+  const { filmName, filmDescription, poster, backdrop, premiere, isActive, trailer, categories } =
+    req.body;
   const posterBase64Data = poster ? poster.replace(/^data:([A-Za-z-+/]+);base64,/, "") : "";
   const backdropBase64Data = backdrop ? backdrop.replace(/^data:([A-Za-z-+/]+);base64,/, "") : "";
   const posterBuffer = Buffer.from(posterBase64Data, "base64");
@@ -99,6 +100,7 @@ router.post("/film", async (req, res) => {
       posterBuffer,
       backdropBuffer,
       premiere,
+      trailer,
       isActive,
     });
     if (categories) {
@@ -120,7 +122,7 @@ router.post("/film", async (req, res) => {
 });
 
 router.put("/film/:id", async (req, res) => {
-  const { filmName, filmDescription, premiere, categories, isActive } = req.body;
+  const { filmName, filmDescription, premiere, categories, trailer, isActive } = req.body;
   const { id } = req.params;
   try {
     const film = await Film.update(
@@ -128,6 +130,7 @@ router.put("/film/:id", async (req, res) => {
         filmName,
         filmDescription,
         premiere,
+        trailer,
         isActive,
       },
       { where: { id } }
