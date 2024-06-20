@@ -44,6 +44,33 @@ Ticket.init(
     totalPrice: {
       type: DataTypes.INTEGER,
     },
+    filmName: {
+      type: DataTypes.VIRTUAL,
+      get(this: any) {
+        if (this.get("ShowSchedule")) {
+          return this.get("ShowSchedule").Film.filmName;
+        }
+        return "";
+      },
+    },
+    showDay: {
+      type: DataTypes.VIRTUAL,
+      get(this: any) {
+        if (this.get("ShowSchedule")) {
+          return this.get("ShowSchedule").showDay;
+        }
+        return "";
+      },
+    },
+    showTime: {
+      type: DataTypes.VIRTUAL,
+      get(this: any) {
+        if (this.get("ShowSchedule")) {
+          return `${this.get("ShowSchedule").BeginTime} - ${this.get("ShowSchedule").endTime}`;
+        }
+        return "";
+      },
+    },
   },
   {
     sequelize,

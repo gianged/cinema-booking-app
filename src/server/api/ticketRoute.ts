@@ -1,7 +1,26 @@
 import express from "express";
 import { Ticket } from "../models/ticket";
+import { ShowSchedule } from "../models/show_schedule";
+import { Film } from "../models/film";
 
 const router = express.Router();
+
+router.get("/ticket/userview/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const ticket = await Ticket.findAll({
+      where: { idUser: id },
+      include: {
+        model: ShowSchedule,
+        include: [Film],
+      },
+    });
+    return res.json(ticket);
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ message: "Server-side error" });
+  }
+});
 
 router.get("/ticket", async (req, res) => {
   try {
@@ -29,7 +48,13 @@ router.post("/ticket", async (req, res) => {
     const { idShow, idUser, ticketAmount, totalPrice } = req.body;
     const id = await Ticket.findOne({ order: [["idTicket", "DESC"]] });
     const newId = id ? id.idTicket + 1 : 1;
-    const ticket = await Ticket.create({ idTicket: newId, idUser, idShow, ticketAmount, totalPrice });
+    const ticket = await Ticket.create({
+      idTicket: newId,
+      idUser,
+      idShow,
+      ticketAmount,
+      totalPrice,
+    });
     return res.json(ticket);
   } catch (err) {
     console.log(err);
