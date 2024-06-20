@@ -25,9 +25,6 @@ export const Home: React.FC = () => {
                 <Item key="home">
                   <Link to="/">Home</Link>
                 </Item>
-                <Item key="movies">
-                  <Link to="/">Movies</Link>
-                </Item>
               </Menu>
             </Col>
             <Col>
