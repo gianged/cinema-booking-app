@@ -1,6 +1,5 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { BookingContext } from "../contexts/BookingContext";
 import { Form, Input, Button, Modal, InputNumber, Space } from "antd";
 import QRCode from "qrcode.react";
 import { useCookies } from "react-cookie";
@@ -29,7 +28,6 @@ const addTicket = async (
 };
 
 export const Payment = () => {
-  const bookingData = useContext(BookingContext);
   const navigate = useNavigate();
   const [modalOpen, setModalOpen] = useState(false);
   const [randomNumber, setRandomNumber] = useState(Math.floor(100000 + Math.random() * 900000));
@@ -44,16 +42,33 @@ export const Payment = () => {
     ) {
       navigate("/");
     }
-  }, []);
+  }, [bookingDataCookies.bookingData, navigate]);
 
   return (
     <>
       <Form name="credit_card" labelCol={{ offset: 4, span: 2 }} wrapperCol={{ span: 6 }}>
         <Form.Item name="cardNumber" label="Card Number" required>
-          <Input placeholder="1234 1234 1234 1234" />
+          <InputNumber placeholder="1234 1234 1234 1234" />
         </Form.Item>
 
-        <Form.Item name="expiryDate" label="Expiry Date" required>
+        <Form.Item
+          name="expiryDate"
+          label="Expiry Date"
+          rules={[
+            { required: true, message: "Please input the expiry date!" },
+            {
+              validator(_, value) {
+                const regex = /^(0[1-9]|1[0-2])\/[0-9]{2}$/;
+                if (value && !regex.test(value)) {
+                  return Promise.reject(
+                    new Error("Please input the expiry date in the format MM/YY!")
+                  );
+                }
+                return Promise.resolve();
+              },
+            },
+          ]}
+        >
           <Input placeholder="MM/YY" />
         </Form.Item>
 
@@ -62,7 +77,7 @@ export const Payment = () => {
         </Form.Item>
 
         <Form.Item name="cvv" label="CVV" required>
-          <Input placeholder="123" />
+          <InputNumber placeholder="123" />
         </Form.Item>
 
         <Form.Item wrapperCol={{ offset: 6 }}>

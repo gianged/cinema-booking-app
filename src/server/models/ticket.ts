@@ -53,6 +53,15 @@ Ticket.init(
         return "";
       },
     },
+    username: {
+      type: DataTypes.VIRTUAL,
+      get(this: any) {
+        if (this.get("User")) {
+          return this.get("User").username;
+        }
+        return "";
+      },
+    },
     showDay: {
       type: DataTypes.VIRTUAL,
       get(this: any) {

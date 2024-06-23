@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Button, Card, Col, Row } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faReceipt, faCircleInfo } from "@fortawesome/free-solid-svg-icons";
+import { faCircleInfo } from "@fortawesome/free-solid-svg-icons";
 import "./FilmCard.scss";
 import { Link } from "react-router-dom";
 

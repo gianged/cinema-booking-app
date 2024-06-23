@@ -22,7 +22,9 @@ export const Admin: React.FC = () => {
           <Menu.Item key="show">
             <Link to={"/manage/show"}></Link>Show Schedule
           </Menu.Item>
-          <Menu.Item key="ticket">Ticket</Menu.Item>
+          <Menu.Item key="ticket">
+            <Link to={"/manage/ticket"}>Ticket</Link>
+          </Menu.Item>
         </Menu>
       </Sider>
     </>

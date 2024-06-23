@@ -2,6 +2,7 @@ import express from "express";
 import { Ticket } from "../models/ticket";
 import { ShowSchedule } from "../models/show_schedule";
 import { Film } from "../models/film";
+import { User } from "../models/user";
 
 const router = express.Router();
 
@@ -24,7 +25,14 @@ router.get("/ticket/userview/:id", async (req, res) => {
 
 router.get("/ticket", async (req, res) => {
   try {
-    const ticket = await Ticket.findAll();
+    const ticket = await Ticket.findAll({
+      include: [
+        {
+          model: User,
+        },
+        { model: ShowSchedule, include: [Film] },
+      ],
+    });
     return res.json(ticket);
   } catch (err) {
     console.log(err);

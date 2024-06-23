@@ -15,6 +15,8 @@ import { Booking } from "./pages/Booking";
 import { UserChecking } from "./components/UserChecking";
 import { BookingProvider } from "./contexts/BookingContext";
 import { Payment } from "./pages/Payment";
+import { TicketView } from "./pages/TicketView";
+import { ManageTicket } from "./pages/ManageTicket";
 
 export const App = () => {
   return (
@@ -43,6 +45,14 @@ export const App = () => {
                   </UserChecking>
                 }
               />
+              <Route
+                path="/ticket"
+                element={
+                  <UserChecking>
+                    <TicketView />
+                  </UserChecking>
+                }
+              />
             </Route>
             <Route
               path="/manage"
@@ -57,6 +67,7 @@ export const App = () => {
               <Route path="film" element={<ManageFilm />} />
               <Route path="category" element={<ManageCategory />} />
               <Route path="show" element={<ManageShow />} />
+              <Route path="ticket" element={<ManageTicket />} />
             </Route>
           </Routes>
         </BookingProvider>

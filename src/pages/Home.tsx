@@ -44,13 +44,13 @@ export const Home: React.FC = () => {
                   <p>Some copyright 2024</p>
                   <p>
                     Data based on{" "}
-                    <a href="https://www.themoviedb.org/" target="_blank">
+                    <a href="https://www.themoviedb.org/" rel="noreferrer" target="_blank">
                       https://www.themoviedb.org/
                     </a>
                   </p>
                   <p>
                     Special thanks to{" "}
-                    <a href="https://simulantion.artstation.com/" target="_blank">
+                    <a href="https://simulantion.artstation.com/" rel="noreferrer" target="_blank">
                       Ms. Lan
                     </a>{" "}
                     making awesome icons.

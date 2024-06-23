@@ -2,14 +2,20 @@ import React, { useContext, useState } from "react";
 import { Button, Dropdown, Form, Input, Menu, Modal, Row, Space } from "antd";
 import { AuthenticateContext } from "../contexts/AuthenticateContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser, faRightFromBracket, faGear } from "@fortawesome/free-solid-svg-icons";
+import {
+  faUser,
+  faRightFromBracket,
+  faGear,
+  faTicketSimple,
+} from "@fortawesome/free-solid-svg-icons";
 import { faUser as faUserLogout } from "@fortawesome/free-regular-svg-icons";
 import "./Authenticate.scss";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export const Authenticate: React.FC = () => {
   const authenticate = useContext(AuthenticateContext);
   const [modalOpen, setModalOpen] = useState(false);
+  const navigate = useNavigate();
 
   return authenticate.isLogin ? (
     <Menu className="menu" theme="dark" mode="horizontal" selectable={false}>
@@ -21,6 +27,18 @@ export const Authenticate: React.FC = () => {
           <Dropdown
             menu={{
               items: [
+                ...(authenticate.role?.current === 1
+                  ? [
+                      {
+                        key: "ticket",
+                        label: "Ticket",
+                        icon: <FontAwesomeIcon icon={faTicketSimple} />,
+                        onClick: () => {
+                          navigate("/ticket");
+                        },
+                      },
+                    ]
+                  : []),
                 {
                   key: "userSetting",
                   label: "User Setting",

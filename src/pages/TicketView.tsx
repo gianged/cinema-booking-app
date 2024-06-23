@@ -10,15 +10,13 @@ const getTicket = async (idUser: string) => {
 
 export const TicketView: React.FC = () => {
   const [ticketList, setTicketList] = useState<any[]>([]);
-  const [authenticateCookie, setAuthenticateCookie, removeAuthenticateCookie] = useCookies([
-    "authenticate",
-  ]);
+  const [authenticateCookie] = useCookies(["authenticate"]);
 
   useEffect(() => {
     getTicket(authenticateCookie.authenticate.id).then((data) => {
       setTicketList(data);
     });
-  }, []);
+  }, [authenticateCookie.authenticate]);
 
   return (
     <>
@@ -28,7 +26,7 @@ export const TicketView: React.FC = () => {
             <Card>
               <h1>{ticket.ShowSchedule.Film.filmName}</h1>
               <p>{ticket.ShowSchedule.showDay}</p>
-              <p>{`${ticket.ShowSchedule.BeginTime} - ${ticket.ShowSchedule.endTime}`}</p>
+              <p>{`${ticket.ShowSchedule.beginTime} - ${ticket.ShowSchedule.endTime}`}</p>
             </Card>
           );
         } else {
