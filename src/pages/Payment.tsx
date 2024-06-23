@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Form, Input, Button, Modal, InputNumber, Space } from "antd";
 import QRCode from "qrcode.react";
 import { useCookies } from "react-cookie";
+import "./Payment.scss"
 
 const addTicket = async (
   idUser: number,
@@ -48,7 +49,7 @@ export const Payment = () => {
     <>
       <Form name="credit_card" labelCol={{ offset: 4, span: 2 }} wrapperCol={{ span: 6 }}>
         <Form.Item name="cardNumber" label="Card Number" required>
-          <InputNumber placeholder="1234 1234 1234 1234" />
+          <InputNumber placeholder="1234 1234 1234 1234" style={{width: 460}} />
         </Form.Item>
 
         <Form.Item
@@ -104,7 +105,7 @@ export const Payment = () => {
               bookingDataCookies.bookingData.ticketAmount,
               totalPrice
             );
-            console.log(bookingDataCookies);
+            navigate("/ticket");
           }}
         >
           <Form.Item
