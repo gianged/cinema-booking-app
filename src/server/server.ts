@@ -13,30 +13,30 @@ const host = "localhost";
 const port = 4000;
 
 app.use(cors());
-app.use(express.json({ limit: "10mb" }));
-app.use(express.urlencoded({ limit: "10mb", extended: true }));
+app.use(express.json({limit: "10mb"}));
+app.use(express.urlencoded({limit: "10mb", extended: true}));
 
 app.listen(port, host, () => {
-  console.log(`Server is running on port ${host}:${port}`);
+    console.log(`Server is running on port ${host}:${port}`);
 });
 
 //test connection
 export const sequelize = new Sequelize("cinema-booking-app-db", "admin", "Giang@123", {
-  host: "localhost",
-  dialect: "mysql",
-  dialectModule: mysql,
-  port: 8000,
-  logging: console.log,
+    host: "localhost",
+    dialect: "mysql",
+    dialectModule: mysql,
+    port: 8000,
+    logging: console.log,
 });
 
 sequelize
-  .authenticate()
-  .then(() => {
-    console.log("Connection has been established successfully.");
-  })
-  .catch((err) => {
-    console.error("Unable to connect to the database:", err);
-  });
+    .authenticate()
+    .then(() => {
+        console.log("Connection has been established successfully.");
+    })
+    .catch((err) => {
+        console.error("Unable to connect to the database:", err);
+    });
 
 //middleware
 app.use("/security", userRouter);

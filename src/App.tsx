@@ -19,59 +19,59 @@ import { TicketView } from "./pages/TicketView";
 import { ManageTicket } from "./pages/ManageTicket";
 
 export const App = () => {
-  return (
-    <BrowserRouter>
-      <AuthenticateProvider>
-        <BookingProvider>
-          <Routes>
-            <Route path="/" element={<Home />}>
-              <Route index element={<HomeContent />} />
-              <Route path="/filmdetail/:id" element={<FilmDetail />} />
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/register" element={<RegisterPage />} />
-              <Route
-                path="/booking"
-                element={
-                  <UserChecking>
-                    <Booking />
-                  </UserChecking>
-                }
-              />
-              <Route
-                path="/payment"
-                element={
-                  <UserChecking>
-                    <Payment />
-                  </UserChecking>
-                }
-              />
-              <Route
-                path="/ticket"
-                element={
-                  <UserChecking>
-                    <TicketView />
-                  </UserChecking>
-                }
-              />
-            </Route>
-            <Route
-              path="/manage"
-              element={
-                <AdminChecking>
-                  <Home />
-                </AdminChecking>
-              }
-            >
-              <Route index element={<HomeContent />} />
-              <Route path="user" element={<ManageUser />} />
-              <Route path="film" element={<ManageFilm />} />
-              <Route path="category" element={<ManageCategory />} />
-              <Route path="show" element={<ManageShow />} />
-              <Route path="ticket" element={<ManageTicket />} />
-            </Route>
-          </Routes>
-        </BookingProvider>
-      </AuthenticateProvider>
-    </BrowserRouter>
-  );
+    return (
+        <BrowserRouter>
+            <AuthenticateProvider>
+                <BookingProvider>
+                    <Routes>
+                        <Route path="/" element={<Home />}>
+                            <Route index element={<HomeContent />} />
+                            <Route path="/filmdetail/:id" element={<FilmDetail />} />
+                            <Route path="/login" element={<LoginPage />} />
+                            <Route path="/register" element={<RegisterPage />} />
+                            <Route
+                                path="/booking"
+                                element={
+                                    <UserChecking>
+                                        <Booking />
+                                    </UserChecking>
+                                }
+                            />
+                            <Route
+                                path="/payment"
+                                element={
+                                    <UserChecking>
+                                        <Payment />
+                                    </UserChecking>
+                                }
+                            />
+                            <Route
+                                path="/ticket"
+                                element={
+                                    <UserChecking>
+                                        <TicketView />
+                                    </UserChecking>
+                                }
+                            />
+                        </Route>
+                        <Route
+                            path="/manage"
+                            element={
+                                <AdminChecking>
+                                    <Home />
+                                </AdminChecking>
+                            }
+                        >
+                            <Route index element={<HomeContent />} />
+                            <Route path="user" element={<ManageUser />} />
+                            <Route path="film" element={<ManageFilm />} />
+                            <Route path="category" element={<ManageCategory />} />
+                            <Route path="show" element={<ManageShow />} />
+                            <Route path="ticket" element={<ManageTicket />} />
+                        </Route>
+                    </Routes>
+                </BookingProvider>
+            </AuthenticateProvider>
+        </BrowserRouter>
+    );
 };
