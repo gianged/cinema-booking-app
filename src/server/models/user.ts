@@ -1,12 +1,5 @@
-import { DataTypes, Model, Sequelize } from "sequelize";
-
-const sequelize = new Sequelize("cinema-booking-app-db", "admin", "Giang@123", {
-    host: "localhost",
-    dialect: "mysql",
-    dialectModule: require("mysql2"),
-    port: 8000,
-    logging: console.log,
-});
+import { DataTypes, Model } from "sequelize";
+import sequelize from "../database";
 
 export class User extends Model {
     declare id: number;

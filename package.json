@@ -3,25 +3,32 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@fastify/cors": "^11.1.0",
+    "@fastify/formbody": "^8.0.2",
+    "@fastify/jwt": "^10.0.0",
     "@fortawesome/fontawesome-svg-core": "^6.5.2",
     "@fortawesome/free-brands-svg-icons": "^6.5.2",
     "@fortawesome/free-regular-svg-icons": "^6.5.2",
     "@fortawesome/free-solid-svg-icons": "^6.5.2",
     "@fortawesome/react-fontawesome": "^0.2.2",
+    "@sinclair/typebox": "^0.34.41",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
     "@types/jest": "^27.5.2",
-    "@types/node": "^16.18.97",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@types/react-router-dom": "^5.3.3",
     "antd": "^5.17.4",
+    "bcryptjs": "^3.0.3",
     "cors": "^2.8.5",
     "dayjs": "^1.11.11",
+    "dotenv": "^17.2.3",
     "express": "^4.19.2",
+    "fastify": "^5.6.2",
+    "fastify-plugin": "^5.1.0",
     "js-sha512": "^0.9.0",
     "mysql2": "^3.10.0",
     "qrcode.react": "^3.1.0",
@@ -34,7 +41,8 @@
     "sequelize": "^6.37.3",
     "typescript": "^4.9.5",
     "url": "^0.11.3",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "winston": "^3.18.3"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -42,7 +50,9 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "server": "ts-node src/server/server.ts",
-    "dev": "concurrently \"npm run server\" \"npm start\""
+    "server:dev": "ts-node-dev --respawn --transpile-only src/server/server.ts",
+    "dev": "concurrently \"npm run server:dev\" \"npm start\"",
+    "type-check": "tsc --noEmit"
   },
   "eslintConfig": {
     "extends": [
@@ -63,6 +73,10 @@
     ]
   },
   "devDependencies": {
-    "@babel/plugin-proposal-private-property-in-object": "^7.21.11"
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/node": "^24.10.1",
+    "nodemon": "^3.1.11",
+    "ts-node-dev": "^2.0.0"
   }
 }
