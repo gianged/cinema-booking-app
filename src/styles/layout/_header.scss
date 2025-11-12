@@ -1,0 +1,69 @@
+@use '../abstracts' as *;
+
+.app-header {
+  background: $white;
+  box-shadow: $shadow-sm;
+  position: sticky;
+  top: 0;
+  z-index: $z-index-sticky;
+  height: $header-height;
+
+  .header-container {
+    @include flex-between;
+    height: 100%;
+    padding: 0 $spacing-lg;
+    max-width: $container-max-width;
+    margin: 0 auto;
+
+    @include respond-to('md') {
+      padding: 0 $spacing-md;
+    }
+  }
+
+  .header-logo {
+    @include flex-center;
+    gap: $spacing-sm;
+    font-size: $font-size-xl;
+    font-weight: $font-weight-bold;
+    color: $primary-color;
+    cursor: pointer;
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+
+  .header-nav {
+    @include flex-center;
+    gap: $spacing-lg;
+
+    @include respond-to('md') {
+      gap: $spacing-md;
+    }
+  }
+
+  .header-menu {
+    @include flex-center;
+    gap: $spacing-md;
+
+    .menu-item {
+      color: $text-primary;
+      font-weight: $font-weight-medium;
+      transition: color $transition-fast;
+
+      &:hover {
+        color: $primary-color;
+      }
+
+      &.active {
+        color: $primary-color;
+        font-weight: $font-weight-semibold;
+      }
+    }
+  }
+
+  .header-actions {
+    @include flex-center;
+    gap: $spacing-md;
+  }
+}

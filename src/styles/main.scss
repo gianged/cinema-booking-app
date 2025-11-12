@@ -1,0 +1,23 @@
+// Main SCSS file - 7-1 Architecture Pattern
+// This file imports all other SCSS files in the correct order
+
+// 1. Abstracts
+@use 'abstracts';
+
+// 2. Vendors (Third-party CSS)
+// Add vendor imports here if needed
+
+// 3. Base
+@use 'base';
+
+// 4. Layout
+@use 'layout';
+
+// 5. Components
+@use 'components';
+
+// 6. Pages
+@use 'pages';
+
+// 7. Themes
+// Add theme imports here if needed
