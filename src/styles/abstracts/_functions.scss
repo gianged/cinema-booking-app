@@ -1,0 +1,27 @@
+// =====================================
+// SPACING FUNCTIONS
+// =====================================
+
+@function spacing($multiplier) {
+  @return $spacing-md * $multiplier;
+}
+
+// =====================================
+// COLOR FUNCTIONS
+// =====================================
+
+@function alpha($color, $opacity) {
+  @return rgba($color, $opacity);
+}
+
+// =====================================
+// UNIT CONVERSION FUNCTIONS
+// =====================================
+
+@function rem($pixels) {
+  @return ($pixels / 16) * 1rem;
+}
+
+@function em($pixels, $context: 16) {
+  @return ($pixels / $context) * 1em;
+}

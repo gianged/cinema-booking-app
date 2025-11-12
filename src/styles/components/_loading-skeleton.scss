@@ -1,0 +1,69 @@
+@use '../abstracts' as *;
+
+.loading-skeleton-card {
+  @include card-base;
+  height: 100%;
+
+  .skeleton-image {
+    width: 100%;
+    height: 400px;
+    margin-bottom: $spacing-md;
+
+    @include respond-to('md') {
+      height: 300px;
+    }
+  }
+
+  .skeleton-content {
+    padding: $spacing-lg;
+  }
+}
+
+.loading-skeleton-list {
+  @include flex-column;
+  gap: $spacing-md;
+
+  .skeleton-list-item {
+    @include flex-between;
+    padding: $spacing-lg;
+    background: $white;
+    border-radius: $border-radius-md;
+    box-shadow: $shadow-sm;
+
+    .skeleton-list-content {
+      flex: 1;
+      margin-left: $spacing-md;
+    }
+  }
+}
+
+.loading-skeleton-table {
+  padding: $spacing-lg;
+  background: $white;
+  border-radius: $border-radius-md;
+  box-shadow: $shadow-sm;
+}
+
+.loading-skeleton-detail {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: $spacing-2xl;
+  padding: $spacing-2xl;
+
+  @include respond-to('md') {
+    grid-template-columns: 1fr;
+  }
+
+  .skeleton-detail-image {
+    width: 100%;
+    height: 600px;
+
+    @include respond-to('md') {
+      height: 400px;
+    }
+  }
+
+  .skeleton-detail-content {
+    padding: $spacing-lg;
+  }
+}
