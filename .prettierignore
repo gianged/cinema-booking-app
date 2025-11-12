@@ -1,0 +1,11 @@
+node_modules
+build
+dist
+coverage
+.env
+.env.local
+*.log
+logs
+package-lock.json
+.git
+docs/analysis

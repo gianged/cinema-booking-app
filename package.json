@@ -52,13 +52,12 @@
     "server": "ts-node src/server/server.ts",
     "server:dev": "ts-node-dev --respawn --transpile-only src/server/server.ts",
     "dev": "concurrently \"npm run server:dev\" \"npm start\"",
-    "type-check": "tsc --noEmit"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+    "type-check": "tsc --noEmit",
+    "lint": "eslint src --ext .ts,.tsx --max-warnings=0",
+    "lint:fix": "eslint src --ext .ts,.tsx --fix",
+    "format": "prettier --write \"src/**/*.{ts,tsx,scss,css,json}\"",
+    "format:check": "prettier --check \"src/**/*.{ts,tsx,scss,css,json}\"",
+    "validate": "npm run type-check && npm run lint && npm run format:check"
   },
   "browserslist": {
     "production": [
@@ -76,7 +75,10 @@
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@types/bcryptjs": "^2.4.6",
     "@types/node": "^24.10.1",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.4",
     "nodemon": "^3.1.11",
+    "prettier": "^3.6.2",
     "ts-node-dev": "^2.0.0"
   }
 }
